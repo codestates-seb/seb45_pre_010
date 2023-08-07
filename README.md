@@ -1,5 +1,5 @@
 ## SEB_45_10 PRE PROJECT
-# Stack Over Flow
+![header](https://capsule-render.vercel.app/api?type=slice&color=auto&text=Stack%20Over%20Flow&fontColor=#FFFFFF)
 
 ## 프로젝트 설명
 
