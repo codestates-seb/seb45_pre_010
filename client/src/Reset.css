@@ -1,0 +1,141 @@
+@charset "utf-8";
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap");
+
+body * {
+  outline: none;
+  box-sizing: border-box;
+}
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+div,
+p,
+blockquote,
+pre,
+code,
+address,
+ul,
+ol,
+li,
+menu,
+nav,
+section,
+article,
+aside,
+dl,
+dt,
+dd,
+table,
+thead,
+tbody,
+tfoot,
+label,
+caption,
+th,
+td,
+form,
+fieldset,
+legend,
+hr,
+input,
+button,
+textarea,
+object,
+figure,
+figcaption {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: #fff;
+  -webkit-text-size-adjust: none;
+  word-wrap: break-word;
+  word-break: keep-all;
+}
+body,
+input,
+select,
+textarea,
+pre {
+  border: none;
+  font-size: 16px;
+  font-family: "Nanum Gothic", sans-serif;
+  color: #525960;
+  margin: 0 auto;
+}
+button {
+  border: none;
+  font-family: "Nanum Gothic", sans-serif;
+  color: #fff;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+ul,
+ol,
+li {
+  list-style: none;
+}
+table {
+  border-spacing: 0;
+}
+img,
+fieldset {
+  border: 0;
+}
+address,
+cite,
+code,
+em {
+  font-style: normal;
+  font-weight: normal;
+}
+label,
+img,
+input,
+select,
+textarea,
+button {
+  vertical-align: middle;
+}
+.hide,
+legend {
+  overflow: hidden;
+  display: block;
+  position: absolute;
+  border: 0;
+  width: 1px;
+  height: 1px;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+hr {
+  display: none;
+}
+main,
+header,
+section,
+nav,
+footer,
+aside,
+article,
+figure {
+  display: block;
+}
+a {
+  color: #525960;
+  text-decoration: none;
+}
+pre {
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: #525960;
+  line-height: 30px;
+}
