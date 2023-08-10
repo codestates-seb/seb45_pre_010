@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Header = () => {
@@ -11,7 +12,7 @@ const Header = () => {
     <HeaderStyle>
       <HeaderCon>
         <h1>
-          <LogoLink>
+          <LogoLink to="/">
             <img src="logo.png" alt="stack overflow" />
           </LogoLink>
         </h1>
@@ -50,9 +51,10 @@ const HeaderCon = styled.div`
   height: 52px;
   max-width: 1240px;
   padding: 0 20px;
+  margin: 0 auto;
 `;
 
-const LogoLink = styled.a`
+const LogoLink = styled(Link)`
   display: block;
   height: 30px;
   > img {
