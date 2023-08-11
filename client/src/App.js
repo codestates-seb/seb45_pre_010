@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./Reset.css";
 import styled from "styled-components";
 
+import Login from "./pages/login/Login"
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -10,7 +11,9 @@ function App() {
     <BrowserRouter>
       <Header />
       <MainContainer>
-        <Routes>{/* <Route path="/" element={<Main />} /> */}</Routes>
+        <Routes>
+          <Route path='/login' element={<Login />} /> 
+          {/* <Route path="/" element={<Main />} /> */}</Routes>
       </MainContainer>
       <Footer />
     </BrowserRouter>
