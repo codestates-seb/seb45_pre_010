@@ -1,4 +1,4 @@
 const QuestionList = () => {
-  return <></>;
+  return <div></div>;
 };
 export default QuestionList;
