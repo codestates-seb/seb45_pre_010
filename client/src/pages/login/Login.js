@@ -1,4 +1,4 @@
-import { Container, Wrapper, LogoContainer, Logo } from "./Login.styled";
+import { Container, Wrapper, LogoContainer, Logo, SignUpText, SignUpLink } from "./Login.styled";
 import GoogleButton from "../../components/login/GoogleButton";
 import InputBox from "../../components/login/InputBox";
 
@@ -11,6 +11,13 @@ function Login() {
         </LogoContainer>
         <GoogleButton />
         <InputBox />
+        <div>
+          <SignUpText>Don't you have acount?
+            <SignUpLink href={'http://localhost:3000/signup'} >
+              Sign up
+            </SignUpLink>
+          </SignUpText>
+        </div>
       </Wrapper>
     </Container>
   );

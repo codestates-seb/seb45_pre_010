@@ -8,6 +8,7 @@ import QuestionList from "./pages/QuestionList";
 import QuestionDetail from "./pages/QuestionDetail";
 import Login from "./pages/login/Login";
 import Write from "./pages/Write";
+import SignUp from "./pages/signup/SignUp";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<QuestionList />} />
           <Route path="/QuestionDetail" element={<QuestionDetail />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />}/>
           <Route path="/Write" element={<Write />} />
         </Routes>
       </MainContainer>

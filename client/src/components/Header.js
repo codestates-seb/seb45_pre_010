@@ -8,6 +8,10 @@ const Header = () => {
     setOnLogin(!onLogin);
   };
 
+  const SignUpHandler = () =>{
+    window.location.href='http://localhost:3000/signup'
+  }
+
   return (
     <HeaderStyle>
       <HeaderCon>
@@ -25,7 +29,7 @@ const Header = () => {
         ) : (
           <div>
             <LoginBtn onClick={LoginHandeler}>Log in</LoginBtn>
-            <SignUpBtn>Sign up</SignUpBtn>
+            <SignUpBtn onClick={SignUpHandler}>Sign up</SignUpBtn>
           </div>
         )}
       </HeaderCon>

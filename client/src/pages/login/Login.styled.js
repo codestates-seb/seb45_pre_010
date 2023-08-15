@@ -21,3 +21,15 @@ export const Logo = styled.img`
 
 `
 
+export const SignUpText = styled.span`
+    font-size: 12px;
+`
+
+export const SignUpLink = styled.a`
+    color : hsl(206,100%,40%);
+    &:hover{
+        color :hsl(206,100%,52%);
+    }
+
+`
+
