@@ -19,16 +19,13 @@ function InputBox(){
 
     const loginHandler = (e) =>{
         const [user] = userData.filter((el)=>el.email === email);
-       
-        console.log(user);
+
         e.preventDefault();
+       
         if(user.password === password){
             window.location.href = 'http://localhost:3000/'
         }
     }
-    
-
-
 
     return (
         <InputBoxContainer>
