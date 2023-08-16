@@ -1,4 +1,5 @@
-const QuestionDetail = () => {
-  return <></>;
-};
+function QuestionDetail () {
+  
+}
+
 export default QuestionDetail;
