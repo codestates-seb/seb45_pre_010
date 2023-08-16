@@ -21,6 +21,10 @@ export const DisplayNameInput = styled.input`
     display: flex;
     border-radius: 6px;    
     border: solid hsl(210,8%,85%);
+    &:focus{
+        border: solid hsl(206,85%,57.5%);
+        box-shadow: 2px 2px 4px hsl(206,85%,57.5%), -2px -2px 4px hsl(206,85%,57.5%);
+    }
 `
 
 export const SignUpEmailLable = styled.label`
@@ -32,6 +36,10 @@ export const SignUpEmailInput = styled.input`
     display: flex;
     border-radius: 6px;    
     border: solid hsl(210,8%,85%);
+    &:focus{
+        border: solid hsl(206,85%,57.5%);
+        box-shadow: 2px 2px 4px hsl(206,85%,57.5%), -2px -2px 4px hsl(206,85%,57.5%);
+    }
 `
 
 export const SignUpPasswordLable = styled.label`
@@ -43,6 +51,10 @@ export const SignUpPasswordInput = styled.input`
     display: flex;
     border-radius: 6px;    
     border: solid hsl(210,8%,85%);
+    &:focus{
+        border: solid hsl(206,85%,57.5%);
+        box-shadow: 2px 2px 4px hsl(206,85%,57.5%), -2px -2px 4px hsl(206,85%,57.5%);
+    }
 `
 
 export const SignUpButtonContainer = styled.div`

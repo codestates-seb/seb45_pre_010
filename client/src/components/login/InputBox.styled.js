@@ -28,6 +28,11 @@ export const InputEmail = styled.input`
     display: flex;
     border-radius: 6px;    
     border: solid hsl(210,8%,85%);
+    &:focus{
+        border: solid hsl(206,85%,57.5%);
+        box-shadow: 2px 2px 4px hsl(206,85%,57.5%), -2px -2px 4px hsl(206,85%,57.5%);
+    }
+
 `
 export const EmailErrorMassage = styled.div`
     display: flex;
@@ -47,6 +52,10 @@ export const InputPassword = styled.input`
     display: flex;
     border-radius: 6px;    
     border: solid hsl(210,8%,85%);
+    &:focus{
+        border: solid hsl(206,85%,57.5%);
+        box-shadow: 2px 2px 4px hsl(206,85%,57.5%), -2px -2px 4px hsl(206,85%,57.5%);
+    }
 `
 export const PasswordErrorMassage = styled.div`
     display: flex;
