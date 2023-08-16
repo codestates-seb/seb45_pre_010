@@ -29,20 +29,22 @@ function SignUpInputBox(){
     }
 
     const signUpcConfirmHandler = () =>{
-        const user =  {
+        if(email && password){      
+            const user =  {
             id : id,
             displayName : displayName,
             email : email,
             password : password
+            }
+            console.log(user);
+            console.log(id);
+            idHandler();
+            setUserList(userList.concat(user)); 
+            setDisplayName('');
+            setEmail('');
+            setPassword('');       
+            console.log(userList);
         }
-        console.log(user);
-        console.log(id);
-        idHandler();
-        setUserList(userList.concat(user)); 
-        setDisplayName('');
-        setEmail('');
-        setPassword('');       
-        console.log(userList);
     }
 
     return(<SignUpContainer>
