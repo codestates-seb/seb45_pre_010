@@ -1,24 +1,72 @@
+import { useState } from "react";
 import styled from "styled-components";
-import TagItem from "../components/write/TagItem";
+import TitleInput from "../components/write/TitleInput";
 import Editor from "../components/write/Editor";
+import TagItem from "../components/write/TagItem";
 
 const Write = () => {
+  // 타이틀 상태
+  const [titleValue, setTitleValue] = useState("");
+  const handleTitleChange = (e) => {
+    setTitleValue(e.target.value);
+  };
+
+  // 에디터 상태
+  const [bodyValue, setBodyValue] = useState("");
+  const onChangeContents = (content) => {
+    setBodyValue(content);
+  };
+
+  // 태그 아이템 상태
+  const [tagValue, setTagValue] = useState("");
+  const [tags, setTags] = useState([]);
+
+  // 등록 전달 데이터
+  const data = {
+    title: titleValue,
+    content: bodyValue,
+
+    // 백엔드 데이터 만들어졌는지 확인해보고 넘겨주기
+    // tag: tags,
+    // created_at: new Date().toLocaleDateString().replace(/\.$/, "")
+    created_at: new Date().toLocaleDateString().replace(/\./g, "").replace(/\s/g, "-"),
+  };
+  console.log(data);
+
+  // const handleSubmit = async () => {
+  //   const data = {
+  //     title: titleValue,
+  //     content: bodyValue,
+  //     tag: tags,
+  //     created_at: new Date().toLocaleDateString(),
+  //   };
+
+  //   try {
+  //     await axios.post('http://localhost:3001/data', newData);
+  //     console.log('데이터가 성공적으로 등록되었습니다.');
+  //   } catch (error) {
+  //     console.error('데이터 등록 실패:', error);
+  //   }
+  // }
+
   return (
     <WriteWrap>
       <WriteConteiner>
         <GuideBox>
           <Title>Title</Title>
-          <TitleInput></TitleInput>
+          <TitleInput handleTitleChange={handleTitleChange} />
         </GuideBox>
         <GuideBox>
           <Title>Body</Title>
-          <Editor />
+          <Editor onChangeContents={onChangeContents} />
         </GuideBox>
         <GuideBox>
           <Title>Tags</Title>
           <InfoTxt>태그는 최대 5개까지 생성 가능합니다.</InfoTxt>
-          <TagItem />
+          <TagItem tagValue={tagValue} setTagValue={setTagValue} tags={tags} setTags={setTags} />
         </GuideBox>
+        <SubmitBtn>Post your question</SubmitBtn>
+        {/* <SubmitBtn onClick={handleSubmit}>등록</SubmitBtn> */}
       </WriteConteiner>
     </WriteWrap>
   );
@@ -57,10 +105,18 @@ const InfoTxt = styled.p`
   font-weight: 100;
 `;
 
-const TitleInput = styled.input`
-  width: 100%;
-  border: 1px solid #babfc4;
-  border-radius: 4px;
-  height: 34px;
-  padding: 0 5px;
+const SubmitBtn = styled.button`
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 12px;
+  border-radius: 6px;
+  background-color: #008efb;
+  color: #fff;
+  font-size: 13px;
+  margin-top: 20px;
+  transition: all 0.3s;
+  &:hover {
+    background-color: #0074cc;
+  }
 `;
