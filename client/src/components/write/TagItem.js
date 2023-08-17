@@ -1,29 +1,41 @@
-import { useState } from "react";
 import styled from "styled-components";
 
-const TagItem = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [tags, setTags] = useState([]);
-
+const TagItem = ({ tagValue, setTagValue, tags, setTags }) => {
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+    setTagValue(e.target.value);
   };
 
+  // 엔터 키 태그 생성 이벤트
   const handleInputKeyPress = (e) => {
-    if (e.key === "Enter" && inputValue.trim() !== "") {
+    if (e.key === "Enter" && tagValue.trim() !== "") {
       if (tags.length < 5) {
-        setTags([...tags, inputValue.trim()]);
-        setInputValue("");
+        if (!tags.includes(tagValue.trim())) {
+          setTags([...tags, tagValue.trim()]);
+          setTagValue("");
+        } else {
+          alert("중복된 태그는 생성할 수 없습니다.");
+          setTagValue("");
+        }
       } else {
         alert("태그는 최대 5개까지만 생성 가능합니다.");
-        setInputValue("");
+        setTagValue("");
       }
     }
   };
 
+  // 엑스버튼 클릭 삭제 이벤트
   const handleTagDelete = (tag) => {
     const updatedTags = tags.filter((t) => t !== tag);
     setTags(updatedTags);
+  };
+
+  // 백스페이스 삭제 이벤트
+  const handleInputKeyDown = (e) => {
+    if (e.key === "Backspace" && tagValue === "") {
+      const updatedTags = [...tags];
+      updatedTags.pop();
+      setTags(updatedTags);
+    }
   };
 
   return (
@@ -38,9 +50,10 @@ const TagItem = () => {
       <TagInput
         type="text"
         placeholder="enter로 tag를 생성해주세요."
-        value={inputValue}
+        value={tagValue}
         onChange={handleInputChange}
-        onKeyDown={handleInputKeyPress}
+        onKeyUp={handleInputKeyPress}
+        onKeyDown={handleInputKeyDown}
       />
     </TagBox>
   );

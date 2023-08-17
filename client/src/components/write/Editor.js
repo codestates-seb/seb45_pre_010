@@ -1,11 +1,7 @@
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const Editor = () => {
-  const onChangeContents = (content) => {
-    console.log(content);
-  };
-
+const Editor = ({ onChangeContents }) => {
   const modules = {
     toolbar: {
       container: [
