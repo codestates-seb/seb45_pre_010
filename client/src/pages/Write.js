@@ -12,7 +12,7 @@ const Write = () => {
   };
 
   // 에디터 상태
-  const [badyValue, setBodyValue] = useState("");
+  const [bodyValue, setBodyValue] = useState("");
   const onChangeContents = (content) => {
     setBodyValue(content);
   };
@@ -24,13 +24,30 @@ const Write = () => {
   // 등록 전달 데이터
   const data = {
     title: titleValue,
-    content: badyValue,
+    content: bodyValue,
 
     // 백엔드 데이터 만들어졌는지 확인해보고 넘겨주기
     // tag: tags,
-    created_at: new Date().toLocaleString(),
+    // created_at: new Date().toLocaleDateString().replace(/\.$/, "")
+    created_at: new Date().toLocaleDateString().replace(/\./g, "").replace(/\s/g, "-"),
   };
   console.log(data);
+
+  // const handleSubmit = async () => {
+  //   const data = {
+  //     title: titleValue,
+  //     content: bodyValue,
+  //     tag: tags,
+  //     created_at: new Date().toLocaleDateString(),
+  //   };
+
+  //   try {
+  //     await axios.post('http://localhost:3001/data', newData);
+  //     console.log('데이터가 성공적으로 등록되었습니다.');
+  //   } catch (error) {
+  //     console.error('데이터 등록 실패:', error);
+  //   }
+  // }
 
   return (
     <WriteWrap>
@@ -48,7 +65,8 @@ const Write = () => {
           <InfoTxt>태그는 최대 5개까지 생성 가능합니다.</InfoTxt>
           <TagItem tagValue={tagValue} setTagValue={setTagValue} tags={tags} setTags={setTags} />
         </GuideBox>
-        <SubmitBtn>등록</SubmitBtn>
+        <SubmitBtn>Post your question</SubmitBtn>
+        {/* <SubmitBtn onClick={handleSubmit}>등록</SubmitBtn> */}
       </WriteConteiner>
     </WriteWrap>
   );
@@ -89,7 +107,6 @@ const InfoTxt = styled.p`
 
 const SubmitBtn = styled.button`
   display: block;
-  width: 100px;
   height: 40px;
   line-height: 40px;
   padding: 0 12px;
