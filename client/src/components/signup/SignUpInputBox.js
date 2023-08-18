@@ -14,16 +14,7 @@ function SignUpInputBox({setIsLogin, setToken}){
     const [displayName, setDisplayName] = useState('');
     const [userId, setUserId] = useState('');
     const [password, setPassword]= useState('');
-    const [createAt, setCreateAt]= useState('');
-
  
-    function formatDate() {
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }   
 
     const displayNameHandler = (e) =>{
         setDisplayName(e.target.value);
@@ -34,8 +25,7 @@ function SignUpInputBox({setIsLogin, setToken}){
     }
 
     const passwordHandler = (e)=>{
-        setPassword(e.target.value);
-        setCreateAt(formatDate());//이거 너무 쓸데없이 불필요하게 반복됨.
+        setPassword(e.target.value);       
     }
 
     const signUpcConfirmHandler = async(e) =>{
@@ -59,15 +49,15 @@ function SignUpInputBox({setIsLogin, setToken}){
 
         else{          
             //왜그런지 모르겠는데 이거없으면 작동이 안됨. 
-            console.log(createAt)
+            
             const user =  {
                 displayName : displayName? displayName : userId,
                 userId : userId,
                 password : password,
-                createAt : createAt
+                createAt :  new Date().toLocaleDateString().replace(/\./g, "").replace(/\s/g, "-"),
                 }
             try{
-                const res =await axios.post('http://localhost:4000', {user});
+                const res =await axios.post('http://localhost:4000/signup', {user});
                 const token = res.data;
                 setIsLogin(true);
                 setToken(token);

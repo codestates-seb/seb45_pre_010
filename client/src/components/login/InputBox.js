@@ -1,6 +1,6 @@
 import { InputBoxContainer, InputForm, UserIdText, 
-    UserIdContainer, InputUserId, UserIdErrorMassage,
-    PasswordText, PasswordContainer, InputPassword, PasswordErrorMassage
+    UserIdContainer, InputUserId, 
+    PasswordText, PasswordContainer, InputPassword
 , ConfirmButtonContainer, ConfirmButton  } from "./InputBox.styled";
 import { useState } from "react";
 import axios from "axios";
@@ -9,6 +9,7 @@ import axios from "axios";
 function InputBox({setIsLogin, setToken}){
     const [userId, setuserId] = useState('');
     const [password , setPassword] = useState('');
+    const [errorMessage, setErrorMessage]= useState('');
 
     const userIdHandler = (e) =>{
         setuserId(e.target.value);        
@@ -28,31 +29,31 @@ function InputBox({setIsLogin, setToken}){
             setIsLogin(true);
         }
         catch(error){
-            console.log(error.response.data);
+            setErrorMessage('ID와 PW를 확인하세요');
         }
     }
 
     return (
         <InputBoxContainer>
           <InputForm>
-            <UserIdText>userId</UserIdText>
+            <UserIdText>Email</UserIdText>
             <UserIdContainer>
                 <InputUserId
                 type = 'userId'
                 onChange={(e)=>userIdHandler(e)}
-                />
-                <UserIdErrorMassage>userId 에러</UserIdErrorMassage>
+                />               
             </UserIdContainer>
-            <PasswordText/>Password
+            <PasswordText>Password</PasswordText>
             <PasswordContainer>
                 <InputPassword
                 type ='password'
-                onChange={(e)=>passwordHandler(e)}/>
-                <PasswordErrorMassage>password에러</PasswordErrorMassage>
-            </PasswordContainer>
+                onChange={(e)=>passwordHandler(e)}/>                
+            </PasswordContainer>           
             <ConfirmButtonContainer>
                 <ConfirmButton onClick={(e)=>loginHandler(e)}>Login</ConfirmButton>
             </ConfirmButtonContainer>
+            {errorMessage?(<div style={{color:'red', fontSize:'10px'}}>{errorMessage}</div>)
+            :(<div style={{fontSize:'10px'}}>id와 pw를 입력하세요</div>)}
           </InputForm>       
         </InputBoxContainer>
     );

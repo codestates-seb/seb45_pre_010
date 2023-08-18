@@ -18,7 +18,7 @@ function App() {
   
   return (
     <BrowserRouter>
-      <Header />
+      <Header isLogin={isLogin} setIsLogin={setIsLogin} setToken={setToken}/>
       <MainContainer>
         <Routes>
           <Route path="/" element={isLogin?(<QuestionList />):(<Login setIsLogin={setIsLogin} setToken={setToken}/>)} />
