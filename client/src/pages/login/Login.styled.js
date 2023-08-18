@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`    
-    height: 80vh;
+    height: 86vh;
     display: flex;
     align-items: center;
     justify-content: center;    
+    background-color: hsl(205,46%,92%);
 `
 
 export const Wrapper = styled.div`

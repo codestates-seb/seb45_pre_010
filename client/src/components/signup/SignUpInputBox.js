@@ -14,6 +14,11 @@ function SignUpInputBox({setIsLogin, setToken}){
     const [displayName, setDisplayName] = useState('');
     const [userId, setUserId] = useState('');
     const [password, setPassword]= useState('');
+    const [errorUserIdMessage, setErrorUserIdMessage] = useState('');
+    const [errorPasswordMessage, setErrorPasswordMEssage]= useState('');
+
+    //const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    //emailPattern.test(string값)  리턴값으로 boolean   혹시 필요할지도 모르니 남겨둠
  
 
     const displayNameHandler = (e) =>{
@@ -33,8 +38,7 @@ function SignUpInputBox({setIsLogin, setToken}){
         e.preventDefault();     
         const temp = userId.slice(userId.length -10)
         if(userId.length <11 && temp !== '@naver.com' && temp !=='@gmail.com'){
-            // console.log(userId)
-            // console.log('invalid id')
+            setErrorUserIdMessage('올바른 형식이 아닙니다.')
             if(passwordRef.current){
                 passwordRef.current.value = '';
             }           
@@ -81,16 +85,21 @@ function SignUpInputBox({setIsLogin, setToken}){
         <DisplayNameLable>Display Name</DisplayNameLable>
         <DisplayNameInput 
         type="text"        
+        placeholder="필수아님"
         onChange={(e)=>displayNameHandler(e)}/>
-        <SignUpUserIdLable>userId</SignUpUserIdLable>
+        <SignUpUserIdLable>Email</SignUpUserIdLable>
         <SignUpUserIdInput 
         type="userId"
-        onChange={(e)=>userIdHandler(e)}/>
+        onChange={(e)=>userIdHandler(e)}/>        
+        {errorUserIdMessage?(<div style={{fontSize:'10px', color:'red', width:'80%'}}>{errorUserIdMessage}</div>)
+        :(<div style={{fontSize:'10px', width:'80%'}}>gmail과 naver형식으로 입력하세요</div>)}        
         <SignUpPasswordLable>Password</SignUpPasswordLable>
         <SignUpPasswordInput 
         type="password"
         ref ={passwordRef}
-        onChange={(e)=>passwordHandler(e)}/>  
+        onChange={(e)=>passwordHandler(e)}/> 
+        {errorPasswordMessage?(<div style={{fontSize:'10px', color:'red', width:'80%'}}></div>)
+        :(<dvi style={{fontSize:'10px', width:'80%'}}>영문자와 숫자조합 8글자이상</dvi>)} 
         <SignUpButtonContainer>
             <SignUpButton onClick={(e)=>signUpcConfirmHandler(e)}>Sign up</SignUpButton>
         </SignUpButtonContainer>      

@@ -12,7 +12,8 @@ export const InputForm = styled.form`
     flex-direction: column;
     align-items: center;
     border-radius: 6px;
-    border: solid hsl(210,8%,85%);       
+    border: solid hsl(210,8%,85%);   
+    background-color : white ;
 `
 export const UserIdText = styled.label`
     display: flex;
@@ -61,6 +62,7 @@ export const InputPassword = styled.input`
 export const ConfirmButtonContainer = styled.div`
     display: flex;
     margin-top: 15px;
+    margin-bottom: 5px;
 `
 export const ConfirmButton = styled.button` 
     width : 230px;
