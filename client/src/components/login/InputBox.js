@@ -1,46 +1,48 @@
-import { InputBoxContainer, InputForm, EmailText, 
-    EmailContainer, InputEmail, EmailErrorMassage,
+import { InputBoxContainer, InputForm, UserIdText, 
+    UserIdContainer, InputUserId, UserIdErrorMassage,
     PasswordText, PasswordContainer, InputPassword, PasswordErrorMassage
 , ConfirmButtonContainer, ConfirmButton  } from "./InputBox.styled";
-import { userData } from "../../dummydata/usetData";
 import { useState } from "react";
+import axios from "axios";
 
-function InputBox(){
-    const [email, setEmail] = useState('');
+
+function InputBox({setIsLogin, setToken}){
+    const [userId, setuserId] = useState('');
     const [password , setPassword] = useState('');
 
-    const emailHandler = (e) =>{
-        setEmail(e.target.value);        
+    const userIdHandler = (e) =>{
+        setuserId(e.target.value);        
     }
 
     const passwordHandler = (e) =>{
         setPassword(e.target.value);        
     }
 
-    const loginHandler = (e) =>{
-        const [user] = userData.filter((el)=>el.email === email);
-       
-        console.log(user);
+    const loginHandler =async (e) =>{
         e.preventDefault();
-        if(user.password === password){
-            window.location.href = 'http://localhost:3000/'
+        try{
+            const res = await axios.post('http://localhost:4000', {userId, password})
+            const token = res.data;
+            console.log(token);
+            setToken(token);
+            setIsLogin(true);
+        }
+        catch(error){
+            console.log(error.response.data);
         }
     }
-    
-
-
 
     return (
         <InputBoxContainer>
           <InputForm>
-            <EmailText>Email</EmailText>
-            <EmailContainer>
-                <InputEmail
-                type = 'email'
-                onChange={(e)=>emailHandler(e)}
+            <UserIdText>userId</UserIdText>
+            <UserIdContainer>
+                <InputUserId
+                type = 'userId'
+                onChange={(e)=>userIdHandler(e)}
                 />
-                <EmailErrorMassage>email 에러</EmailErrorMassage>
-            </EmailContainer>
+                <UserIdErrorMassage>userId 에러</UserIdErrorMassage>
+            </UserIdContainer>
             <PasswordText/>Password
             <PasswordContainer>
                 <InputPassword
