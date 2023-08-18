@@ -15,21 +15,26 @@ export const InputForm = styled.form`
     border: solid hsl(210,8%,85%);  
      
 `
-export const EmailText = styled.label`
+export const UserIdText = styled.label`
     display: flex;   
 `
-export const EmailContainer = styled.div`
+export const UserIdContainer = styled.div`
     display: flex;
     flex-direction: column;
 `
-export const InputEmail = styled.input`
+export const InputUserId = styled.input`
     width : 230px;
     height: 34px;
     display: flex;
     border-radius: 6px;    
     border: solid hsl(210,8%,85%);
+    &:focus{
+        border: solid hsl(206,85%,57.5%);
+        box-shadow: 2px 2px 4px hsl(206,85%,57.5%), -2px -2px 4px hsl(206,85%,57.5%);
+    }
+
 `
-export const EmailErrorMassage = styled.div`
+export const UserIdErrorMassage = styled.div`
     display: flex;
     
 `
@@ -47,6 +52,10 @@ export const InputPassword = styled.input`
     display: flex;
     border-radius: 6px;    
     border: solid hsl(210,8%,85%);
+    &:focus{
+        border: solid hsl(206,85%,57.5%);
+        box-shadow: 2px 2px 4px hsl(206,85%,57.5%), -2px -2px 4px hsl(206,85%,57.5%);
+    }
 `
 export const PasswordErrorMassage = styled.div`
     display: flex;

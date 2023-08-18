@@ -8,16 +8,20 @@ import QuestionList from "./pages/QuestionList";
 import QuestionDetail from "./pages/QuestionDetail";
 import Login from "./pages/login/Login";
 import Write from "./pages/Write";
+import SignUp from "./pages/signup/SignUp";
+import { useState } from "react";
 
 function App() {
+  const [isLogin , setIsLogin] = useState(false);
+  const [token, setToken] = useState('');
   return (
     <BrowserRouter>
       <Header />
       <MainContainer>
         <Routes>
-          <Route path="/" element={<QuestionList />} />
-          <Route path="/QuestionDetail" element={<QuestionDetail />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={isLogin?(<QuestionList />):(<Login setIsLogin={setIsLogin} setToken={setToken}/>)} />
+          <Route path="/QuestionDetail" element={<QuestionDetail />} />          
+          <Route path="/signup" element={<SignUp setIsLogin={setIsLogin} setToken={setToken} />}/>
           <Route path="/Write" element={<Write />} />
         </Routes>
       </MainContainer>

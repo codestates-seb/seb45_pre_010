@@ -21,6 +21,7 @@ export const GoogleLogo = styled.img`
 `
 export const GoogleLoginText = styled.span`
     display: flex;
+    color : gray;
     font-weight: 100;
 `
 
