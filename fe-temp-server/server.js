@@ -4,7 +4,15 @@ const express = require('express');
 const app = express();
 const port = 4000;
 
-app.use(cors());
+
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 // 루트 경로에 대한 요청 처리
 app.get('/', (req, res) => {
