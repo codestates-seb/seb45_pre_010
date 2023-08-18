@@ -38,14 +38,13 @@ function SignUpInputBox({setIsLogin, setToken}){
         e.preventDefault();     
         const temp = userId.slice(userId.length -10)
         if(userId.length <11 && temp !== '@naver.com' && temp !=='@gmail.com'){
-            setErrorUserIdMessage('올바른 형식이 아닙니다.')
+            setErrorUserIdMessage('올바른 id형식이 아닙니다.')
             if(passwordRef.current){
                 passwordRef.current.value = '';
             }           
         } 
         else if(password === '' || !(password.length >= 8 && /\d/.test(password))){
-            // console.log('invaild pw')
-            // console.log(password)
+            setErrorPasswordMEssage('올바른 pw형식이 아닙니다.')
             if(passwordRef.current){
                 passwordRef.current.value = '';
             }      
