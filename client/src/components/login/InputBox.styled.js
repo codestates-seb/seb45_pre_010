@@ -15,14 +15,14 @@ export const InputForm = styled.form`
     border: solid hsl(210,8%,85%);  
      
 `
-export const EmailText = styled.label`
+export const UserIdText = styled.label`
     display: flex;   
 `
-export const EmailContainer = styled.div`
+export const UserIdContainer = styled.div`
     display: flex;
     flex-direction: column;
 `
-export const InputEmail = styled.input`
+export const InputUserId = styled.input`
     width : 230px;
     height: 34px;
     display: flex;
@@ -34,7 +34,7 @@ export const InputEmail = styled.input`
     }
 
 `
-export const EmailErrorMassage = styled.div`
+export const UserIdErrorMassage = styled.div`
     display: flex;
     
 `

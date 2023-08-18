@@ -3,12 +3,12 @@ import SignUpInputBox from "../../components/signup/SignUpInputBox";
 import { SignUpContainer, SignUpWrapper } from "./SignUp.styled";
 
 
-function SignUp(){
+function SignUp({setIsLogin, setToken}){
     return (
     <SignUpContainer>
         <SignUpWrapper>
           <GoogleSignUpButton />
-          <SignUpInputBox />
+          <SignUpInputBox setIsLogin={setIsLogin} setToken={setToken}/>
         </SignUpWrapper>        
     </SignUpContainer>);
 }

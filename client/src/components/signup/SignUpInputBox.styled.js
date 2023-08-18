@@ -27,10 +27,10 @@ export const DisplayNameInput = styled.input`
     }
 `
 
-export const SignUpEmailLable = styled.label`
+export const SignUpUserIdLable = styled.label`
 `
 
-export const SignUpEmailInput = styled.input`
+export const SignUpUserIdInput = styled.input`
     width : 230px;
     height: 34px;
     display: flex;
