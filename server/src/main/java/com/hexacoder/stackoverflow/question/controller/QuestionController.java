@@ -7,6 +7,7 @@ import com.hexacoder.stackoverflow.question.mapper.QuestionMapper;
 import com.hexacoder.stackoverflow.question.response.MultiResponseDto;
 import com.hexacoder.stackoverflow.question.response.SingleResponseDto;
 import com.hexacoder.stackoverflow.question.service.QuestionService;
+import com.hexacoder.stackoverflow.question.service.QuestionTagService;
 import com.hexacoder.stackoverflow.question.utils.UriCreator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -32,10 +33,14 @@ public class QuestionController {
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
 
+    private final QuestionTagService questionTagService;
 
-    public QuestionController(QuestionService questionService, QuestionMapper questionMapper) {
+
+    public QuestionController(QuestionService questionService, QuestionMapper questionMapper,
+                              QuestionTagService questionTagService) {
         this.questionService = questionService;
         this.questionMapper = questionMapper;
+        this.questionTagService = questionTagService;
 
     }
 
@@ -70,11 +75,17 @@ public class QuestionController {
     public ResponseEntity getSearchQuestion(
             @Positive @RequestParam(required = false) int page,
             @Positive @RequestParam(required = false) int size,
-            @RequestParam(required = false) String title) {
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String tag) {
+
         if(title != null ){
             AllResponseDto pagepageQuestions = questionService.findSearchQuestions(page - 1, size, title);
             return new ResponseEntity<>(pagepageQuestions, HttpStatus.OK);
-        } else{
+        } else if(tag != null) {
+            AllResponseDto pagepageQuestions = questionService.findSearchtagQuestions(page - 1, size, tag);
+            return new ResponseEntity<>(pagepageQuestions, HttpStatus.OK);
+        }
+        else{
             AllResponseDto pageQuestions = questionService.findAllQuestions(page - 1, size);
             return new ResponseEntity<>(pageQuestions, HttpStatus.OK);
         }

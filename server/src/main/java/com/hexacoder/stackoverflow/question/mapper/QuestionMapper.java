@@ -3,7 +3,9 @@ package com.hexacoder.stackoverflow.question.mapper;
 import com.hexacoder.stackoverflow.Answer.AnswerDto.AnswerResponseDto;
 import com.hexacoder.stackoverflow.question.dto.*;
 import com.hexacoder.stackoverflow.question.entity.Question;
+import com.hexacoder.stackoverflow.question.entity.QuestionTag;
 import com.hexacoder.stackoverflow.question.repository.QuestionRepository;
+import com.hexacoder.stackoverflow.tag.entity.Tag;
 import com.hexacoder.stackoverflow.user.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -40,17 +42,18 @@ public interface QuestionMapper {
             int count = 0;
             String nickname = null;
             String createdAt = null;
+            List<Tag> questionTag = null;
 
             questionId = questionUserProfileDto.getQuestion().getQuestionId();
             title = questionUserProfileDto.getQuestion().getTitle();
             count = questionUserProfileDto.getAnswerList().size();
             nickname = questionUserProfileDto.getUser().getNickname();
-            //createdAt = questionUserProfileDto.getQuestion().getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            questionTag = questionUserProfileDto.getTagList();
             createdAt = questionUserProfileDto.getQuestion().getCreatedAt() != null ?
                     questionUserProfileDto.getQuestion().getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) : null;
 
 
-            TopQuestionDto.Response topQuestionDto = new TopQuestionDto.Response(questionId, title, count, nickname, createdAt);
+            TopQuestionDto.Response topQuestionDto = new TopQuestionDto.Response(questionId, title, count, nickname, createdAt, questionTag);
             return topQuestionDto;
         }
     }
@@ -71,6 +74,7 @@ public interface QuestionMapper {
             String nickname = null;
             List<AnswerResponseDto> answerList = new ArrayList<>();
             String createdAt = null;
+            List<Tag> questionTag = null;
 
             LocalDateTime questionCreatedAt = questionUserProfileDto.getQuestion().getCreatedAt();
             if (questionCreatedAt != null) {
@@ -83,6 +87,7 @@ public interface QuestionMapper {
             content = questionUserProfileDto.getQuestion().getContent();
             userId = questionUserProfileDto.getUser().getUserId();
             nickname = questionUserProfileDto.getUser().getNickname();
+            questionTag = questionUserProfileDto.getTagList();
 
 
             questionUserProfileDto.getAnswerList().stream()
@@ -99,25 +104,31 @@ public interface QuestionMapper {
                         answerList.add(answerResponse);
                     });
 
-//            createdAt = questionUserProfileDto.getQuestion().getCreatedAt().format(
-//                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
             createdAt = questionUserProfileDto.getQuestion().getCreatedAt() != null ?
                     questionUserProfileDto.getQuestion().getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) : null;
 
 
             QuestionDetailDto questionDetailDto =
-                    new QuestionDetailDto(questionId, title, content, userId, nickname, answerList, createdAt);
+                    new QuestionDetailDto(questionId, title, content, userId, nickname, answerList, createdAt, questionTag);
             return questionDetailDto;
         }
     }
 
+
+
+
     default AllQuestionDto AllQuestionResponseDto(Question question) {
+
+        List<QuestionTag> questionTags = question.getQuestionTags();
+
 
         AllQuestionDto allQuestionDto = new AllQuestionDto();
         allQuestionDto.setQuestionId(question.getQuestionId());
         allQuestionDto.setTitle(question.getTitle());
         allQuestionDto.setContent(question.getContent());
         allQuestionDto.setAnswerCount(question.getAnswers().stream().count());
+        allQuestionDto.setQuestionTag(questionTagsToQuestionTagResponseDto(questionTags));
 
         LocalDateTime createdAt = question.getCreatedAt();
         allQuestionDto.setCreatedAt(createdAt != null ?
@@ -127,11 +138,23 @@ public interface QuestionMapper {
 
         allQuestionDto.setUser(question.getUser());
         allQuestionDto.setNickname(question.getUser().getNickname());
-        //allQuestionDto.setCreatedAt(question.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
         return allQuestionDto;
     }
 
+
+    default List<QuestionTagResponseDto> questionTagsToQuestionTagResponseDto(List<QuestionTag> questionTags) {
+        return questionTags
+                .stream()
+                .map(questionTag -> QuestionTagResponseDto
+                        .builder()
+                        .tagId(questionTag.getTag().getTagId())
+                        .tagName(questionTag.getTag().getTagName())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    List<ResponseDto> questionsToResponse(List<Question> questions);
 
 
 }

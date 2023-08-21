@@ -9,9 +9,11 @@ public enum ExceptionCode {
     PASSWORD_NOT_MATCH(404, "Password does not match."),
     NICKNAME_EXISTS(409, "Nickname exists."),
     QUESTION_NOT_FOUND(404, "Question not found."),
+    TAG_NOT_FOUND(404, "Tag not found."),
     QUESTION_AUTHOR_NOT_MATCH(404, "The author of the question does not match."),
     ANSWER_NOT_FOUND(404,"Answer not found."),
     ANSWER_AUTHOR_NOT_MATCH(404,"The author of the answer does not match.");
+
 
     @Getter
     private int status;

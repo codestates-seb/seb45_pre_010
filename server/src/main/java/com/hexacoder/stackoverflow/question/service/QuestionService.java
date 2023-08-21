@@ -8,13 +8,18 @@ import com.hexacoder.stackoverflow.exception.BusinessLogicException;
 import com.hexacoder.stackoverflow.exception.ExceptionCode;
 import com.hexacoder.stackoverflow.question.mapper.QuestionMapper;
 import com.hexacoder.stackoverflow.question.repository.QuestionRepository;
+import com.hexacoder.stackoverflow.question.repository.QuestionTagRepository;
+import com.hexacoder.stackoverflow.tag.entity.Tag;
+import com.hexacoder.stackoverflow.tag.repository.TagRepository;
 import com.hexacoder.stackoverflow.user.entity.UserEntity;
 import com.hexacoder.stackoverflow.user.service.UserService;
+import com.hexacoder.stackoverflow.question.dto.AskQuestionDto.TagDto;
 
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -23,8 +28,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import javax.persistence.EntityNotFoundException;
 
 @Transactional
 @Service
@@ -36,14 +45,24 @@ public class QuestionService {
 
     private final UserService userService;
 
+    private final QuestionTagRepository questionTagRepository;
+
+    private final TagRepository tagRepository;
+
+    private final QuestionTagService questionTagService;
 
 
 
-    public QuestionService(QuestionRepository questionRepository,
-                           QuestionMapper questionMapper, UserService userService) {
+
+    public QuestionService(QuestionRepository questionRepository, QuestionMapper questionMapper,
+                           UserService userService, QuestionTagRepository questionTagRepository,
+                           TagRepository tagRepository, QuestionTagService questionTagService) {
         this.questionRepository = questionRepository;
         this.questionMapper = questionMapper;
         this.userService = userService;
+        this.questionTagRepository = questionTagRepository;
+        this.tagRepository = tagRepository;
+        this.questionTagService = questionTagService;
     }
 
     @Transactional
@@ -52,27 +71,55 @@ public class QuestionService {
         // Dto로 받아온 데이터들을 Entity 객체로 만든 후
         // Repository를 통해 데이터를 데이터베이스에 추가해야함
 
+
         // Question Dto -> Question Entity 만듬
         Question question = questionMapper.askquestionPostToQuestion(requestBody);
 
         UserEntity findUser = userService.findUser(requestBody.getUserId());
 
+
         question.addUser(findUser);
 
+        List<TagDto> questionTags = requestBody.getQuestionTag();
+        if (questionTags == null || questionTags.isEmpty()) {
+            throw new IllegalArgumentException("질문 태그가 비어있습니다.");
+        }
+
+        List<Long> tagIds = questionTags.stream()
+                .map(TagDto::getTagId)
+                .filter(Objects::nonNull)  // Remove null tagIds
+                .distinct()
+                .collect(Collectors.toList());
+
+        if (tagIds.isEmpty()) {
+            throw new IllegalArgumentException("태그 ID가 비어있습니다.");
+        }
+
+        List<Tag> actualTags = tagRepository.findAllById(tagIds);
+
+        if (tagIds.size() != actualTags.size()) {
+            throw new EntityNotFoundException("태그가 존재하지 않습니다.");
+        }
+
+        question.addQuestionTags(actualTags);
         Question savedQuestion = questionRepository.save(question);
         return savedQuestion;
     }
+
+
 
     @Transactional(readOnly = true)
     public QuestionDetailDto findQuestionDetail(long questionId) {
         Question findQuestion = findVerifiedQuestionByQuery(questionId);
         UserEntity findUser = userService.findUser(findQuestion.getUser().getUserId());
         List<Answer> finAnswerList = findQuestion.getAnswers();
+        List<Tag> findTagList = questionTagService.getTagsByQuestionId(questionId);
         QuestionUserProfileDto questionUserProfileDto = new QuestionUserProfileDto();
 
         questionUserProfileDto.setQuestion(findQuestion);
         questionUserProfileDto.setUser(findUser);
         questionUserProfileDto.setAnswerList(finAnswerList);
+        questionUserProfileDto.setTagList(findTagList);
 
         return questionMapper.questionToResponse(questionUserProfileDto);
     }
@@ -109,10 +156,12 @@ public class QuestionService {
             UserEntity findUser = question.getUser();
             List<Answer> findAnswerList = question.getAnswers();
             QuestionUserProfileDto questionUserProfileDto = new QuestionUserProfileDto();
+            List<Tag> findTagList = questionTagService.getTagsByQuestionId(question.getQuestionId());
 
             questionUserProfileDto.setQuestion(question);
             questionUserProfileDto.setUser(findUser);
             questionUserProfileDto.setAnswerList(findAnswerList);
+            questionUserProfileDto.setTagList(findTagList);
 
             topQuestions.add(questionMapper.questionToTopQuestion(questionUserProfileDto));
         });
@@ -151,25 +200,25 @@ public class QuestionService {
         return responseDtos;
     }
 
-//    @Transactional(readOnly = true)
-//    public AllResponseDto findSearchtagQuestions(int page, int size, String tag) {
-//        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-//
-//        Tag findTag = tagRepository.findByTagName(tag);
-//
-//        if(findTag == null) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "태그를 찾을 수 없습니다.");
-//        }
-//
-//        Page<Question> questions = questionTagRepository.findQuestionsByTagId(findTag.getTagId(), pageable);
-//
-//        AllResponseDto responseDtos =
-//                new AllResponseDto(questions.stream().map((q) ->
-//                        questionMapper.AllQuestionResponseDto(q)).collect(Collectors.toList()),
-//                        questions.getTotalPages(), questions.getTotalElements());
-//
-//        return responseDtos;
-//    }
+    @Transactional(readOnly = true)
+    public AllResponseDto findSearchtagQuestions(int page, int size, String tag) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        Tag findTag = tagRepository.findByTagName(tag);
+
+        if(findTag == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "태그를 찾을 수 없습니다.");
+        }
+
+        Page<Question> questions = questionTagRepository.findQuestionsByTagId(findTag.getTagId(), pageable);
+
+        AllResponseDto responseDtos =
+                new AllResponseDto(questions.stream().map((q) ->
+                        questionMapper.AllQuestionResponseDto(q)).collect(Collectors.toList()),
+                        questions.getTotalPages(), questions.getTotalElements());
+
+        return responseDtos;
+    }
 
 
 
