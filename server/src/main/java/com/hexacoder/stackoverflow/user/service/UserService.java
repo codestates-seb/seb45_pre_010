@@ -62,6 +62,12 @@ public class UserService {
                 new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
     }
 
+    public UserEntity findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+    }
+
+
     /*
     <회원 정보 삭제>
     1. 회원 검증(존재O or 존재X)
@@ -85,7 +91,6 @@ public class UserService {
             throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
         }
     }
-
     // 중복 닉네임
     private void verifyExistsNickname(String nickname) {
         Optional<UserEntity> optionalUser = userRepository.findByNickname(nickname);
