@@ -51,16 +51,20 @@ function SignUpInputBox({setIsLogin, setToken}){
         }
 
         else{          
-            //왜그런지 모르겠는데 이거없으면 작동이 안됨. 
-            
-            const user =  {
-                displayName : displayName? displayName : userId,
-                userId : userId,
-                password : password,
-                createAt :  new Date().toLocaleDateString().replace(/\./g, "").replace(/\s/g, "-"),
-                }
+            e.preventDefault();
+            //왜그런지 모르겠는데 이거없으면 작동이 안됨.  
+            //'http://localhost:8080/users'
+            //'http://localhost:4000/signup'
+          
             try{
-                const res =await axios.post('http://localhost:4000/signup', {user});
+                
+            if(displayName===''){
+                setDisplayName(userId);
+            }
+                
+                const res =await axios.post('http://localhost:4000/signup', 
+                {nickname:displayName, email:userId, password:password}
+                )
                 const token = res.data;
                 setIsLogin(true);
                 setToken(token);
@@ -70,8 +74,6 @@ function SignUpInputBox({setIsLogin, setToken}){
             catch(error){
                 console.log(error.response.data)
             }  
-                    
-            console.log(user);
             setDisplayName('');
             setUserId('');
             setPassword('');                
@@ -84,7 +86,7 @@ function SignUpInputBox({setIsLogin, setToken}){
         <DisplayNameLable>Display Name</DisplayNameLable>
         <DisplayNameInput 
         type="text"        
-        placeholder="필수아님"
+        placeholder="닉네임을 입력하세요"
         onChange={(e)=>displayNameHandler(e)}/>
         <SignUpUserIdLable>Email</SignUpUserIdLable>
         <SignUpUserIdInput 
@@ -97,8 +99,8 @@ function SignUpInputBox({setIsLogin, setToken}){
         type="password"
         ref ={passwordRef}
         onChange={(e)=>passwordHandler(e)}/> 
-        {errorPasswordMessage?(<div style={{fontSize:'10px', color:'red', width:'80%'}}></div>)
-        :(<dvi style={{fontSize:'10px', width:'80%'}}>영문자와 숫자조합 8글자이상</dvi>)} 
+         {errorPasswordMessage?(<div style={{fontSize:'10px', color:'red', width:'80%'}}>{errorPasswordMessage}</div>)
+        :(<div style={{fontSize:'10px', width:'80%'}}>대소문자 구분없이 숫자 조합 8글자이상</div>)}  
         <SignUpButtonContainer>
             <SignUpButton onClick={(e)=>signUpcConfirmHandler(e)}>Sign up</SignUpButton>
         </SignUpButtonContainer>      
