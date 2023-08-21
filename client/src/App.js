@@ -9,22 +9,29 @@ import QuestionDetail from "./pages/QuestionDetail";
 import Login from "./pages/login/Login";
 import Write from "./pages/Write";
 import SignUp from "./pages/signup/SignUp";
-import { useState } from "react";
+import Sidebar from "./pages/mypage/Sidebar";
+import { useState, useEffect } from "react";
 
 function App() {
   const [isLogin , setIsLogin] = useState(false);
   const [token, setToken] = useState('');
+  const [userInfo, setUserInfo] =useState('');
+
+  useEffect(()=>{setUserInfo(token);
+  },[token]);
+   //백앤드와 연계시 가장먼저 바꿔야됨.!!
 
   
   return (
     <BrowserRouter>
-      <Header />
+      <Header isLogin={isLogin} setIsLogin={setIsLogin} setToken={setToken}/>
+      {isLogin?(<Sidebar userInfo={userInfo}/>):('')}
       <MainContainer>
         <Routes>
           <Route path="/" element={isLogin?(<QuestionList />):(<Login setIsLogin={setIsLogin} setToken={setToken}/>)} />
           <Route path="/QuestionDetail" element={<QuestionDetail />} />          
           <Route path="/signup" element={<SignUp setIsLogin={setIsLogin} setToken={setToken} />}/>
-          <Route path="/Write" element={<Write />} />
+          <Route path="/Write" element={<Write />} />          
         </Routes>
       </MainContainer>
       <Footer />

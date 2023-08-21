@@ -2,21 +2,24 @@ import styled from 'styled-components';
 
 export const InputBoxContainer = styled.div`
     display: flex;
-    align-items: center;    
+    align-items: center;   
+    margin-bottom : 5px;
 `
 export const InputForm = styled.form`
-    width: 276px;
-    max-width: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;    
     flex-direction: column;
     align-items: center;
     border-radius: 6px;
-    border: solid hsl(210,8%,85%);  
-     
+    border: solid hsl(210,8%,85%);   
+    background-color : white ;
 `
 export const UserIdText = styled.label`
-    display: flex;   
+    display: flex;
+    width: 80%;
+    margin-top: 15px;   
+    margin-bottom: 5px;
 `
 export const UserIdContainer = styled.div`
     display: flex;
@@ -34,13 +37,12 @@ export const InputUserId = styled.input`
     }
 
 `
-export const UserIdErrorMassage = styled.div`
-    display: flex;
-    
-`
-
 export const PasswordText = styled.label`
     display: flex;
+    width: 80%;
+    margin-top: 15px;   
+    margin-bottom: 5px;
+
 `
 export const PasswordContainer = styled.div`
     display: flex;
@@ -57,11 +59,10 @@ export const InputPassword = styled.input`
         box-shadow: 2px 2px 4px hsl(206,85%,57.5%), -2px -2px 4px hsl(206,85%,57.5%);
     }
 `
-export const PasswordErrorMassage = styled.div`
-    display: flex;
-`
 export const ConfirmButtonContainer = styled.div`
     display: flex;
+    margin-top: 15px;
+    margin-bottom: 5px;
 `
 export const ConfirmButton = styled.button` 
     width : 230px;

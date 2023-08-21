@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const GoogleButtonContainer = styled.div`
     display: flex;    
+    margin-bottom: 20px;
 `
 export const GoogleEmailButton = styled.button`
     display: flex;

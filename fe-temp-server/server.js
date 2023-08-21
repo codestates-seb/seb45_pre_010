@@ -7,7 +7,7 @@ const port = 4000;
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:3000', 
     methods: ['GET', 'POST'],
     credentials: true,
   })
@@ -20,8 +20,21 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', (req, res) => {
+    const {userId, password} = req.body;
+    const [temp]  = USER_DATA.filter((el)=>el.userId===userId && el.password===password)
+    
+    console.log(temp);   
+      
+    if (temp) {
+     
+      res.json('token받아라');
+    } else {
+      res.status(400).json({ error: '데이터가 유효하지 않습니다.' });
+    }
+  });
+  app.post('/signup', (req, res) => {
     const receivedData = req.body;
-    console.log(receivedData);
+    console.log('signup', receivedData);    
       
     if (receivedData) {
      

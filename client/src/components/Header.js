@@ -1,12 +1,20 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-const Header = () => {
-  const [onLogin, setOnLogin] = useState(false);
+
+const Header = ({isLogin, setIsLogin, setToken}) => {
+  const navigate=useNavigate();
+
   const LoginHandeler = () => {
-    setOnLogin(!onLogin);
-  };
+    setIsLogin(!isLogin);
+  }; //이것도 아마 쓸일이 없을거 같습니다. 근데 확신은 못해서 일단 남겨놓겠습니다.
+
+  const LogOutHandeler = () => {  
+    setIsLogin(false);
+    setToken('');
+    navigate('/')
+  }
 
   const SignUpHandler = () =>{
     window.location.href='http://localhost:3000/signup'
@@ -20,11 +28,11 @@ const Header = () => {
             <img src="logo.png" alt="stack overflow" />
           </LogoLink>
         </h1>
-        {onLogin ? (
+        {isLogin ? (
           <Profile>
             <img src="profile.png" alt="프로필 이미지" />
             <NickName>닉네임</NickName>
-            <LogOutBtn onClick={LoginHandeler}>Log out</LogOutBtn>
+            <LogOutBtn onClick={LogOutHandeler}>Log out</LogOutBtn>            
           </Profile>
         ) : (
           <div>
@@ -93,6 +101,7 @@ const LogOutBtn = styled.button`
     background-color: #e3e3e3;
   }
 `;
+
 
 const LoginBtn = styled.button`
   height: 30px;

@@ -14,16 +14,12 @@ function SignUpInputBox({setIsLogin, setToken}){
     const [displayName, setDisplayName] = useState('');
     const [userId, setUserId] = useState('');
     const [password, setPassword]= useState('');
-    const [createAt, setCreateAt]= useState('');
+    const [errorUserIdMessage, setErrorUserIdMessage] = useState('');
+    const [errorPasswordMessage, setErrorPasswordMEssage]= useState('');
 
+    //const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    //emailPattern.test(string값)  리턴값으로 boolean   혹시 필요할지도 모르니 남겨둠
  
-    function formatDate() {
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }   
 
     const displayNameHandler = (e) =>{
         setDisplayName(e.target.value);
@@ -34,8 +30,7 @@ function SignUpInputBox({setIsLogin, setToken}){
     }
 
     const passwordHandler = (e)=>{
-        setPassword(e.target.value);
-        setCreateAt(formatDate());//이거 너무 쓸데없이 불필요하게 반복됨.
+        setPassword(e.target.value);       
     }
 
     const signUpcConfirmHandler = async(e) =>{
@@ -43,31 +38,33 @@ function SignUpInputBox({setIsLogin, setToken}){
         e.preventDefault();     
         const temp = userId.slice(userId.length -10)
         if(userId.length <11 && temp !== '@naver.com' && temp !=='@gmail.com'){
-            // console.log(userId)
-            // console.log('invalid id')
+            setErrorUserIdMessage('올바른 id형식이 아닙니다.')
             if(passwordRef.current){
                 passwordRef.current.value = '';
             }           
         } 
         else if(password === '' || !(password.length >= 8 && /\d/.test(password))){
-            // console.log('invaild pw')
-            // console.log(password)
+            setErrorPasswordMEssage('올바른 pw형식이 아닙니다.')
             if(passwordRef.current){
                 passwordRef.current.value = '';
             }      
         }
 
         else{          
-            //왜그런지 모르겠는데 이거없으면 작동이 안됨. 
-            console.log(createAt)
-            const user =  {
-                displayName : displayName? displayName : userId,
-                userId : userId,
-                password : password,
-                createAt : createAt
-                }
+            e.preventDefault();
+            //왜그런지 모르겠는데 이거없으면 작동이 안됨.  
+            //'http://localhost:8080/users'
+            //'http://localhost:4000/signup'
+          
             try{
-                const res =await axios.post('http://localhost:4000', {user});
+                
+            if(displayName===''){
+                setDisplayName(userId);
+            }
+                
+                const res =await axios.post('http://localhost:4000/signup', 
+                {nickname:displayName, email:userId, password:password}
+                )
                 const token = res.data;
                 setIsLogin(true);
                 setToken(token);
@@ -77,8 +74,6 @@ function SignUpInputBox({setIsLogin, setToken}){
             catch(error){
                 console.log(error.response.data)
             }  
-                    
-            console.log(user);
             setDisplayName('');
             setUserId('');
             setPassword('');                
@@ -91,16 +86,21 @@ function SignUpInputBox({setIsLogin, setToken}){
         <DisplayNameLable>Display Name</DisplayNameLable>
         <DisplayNameInput 
         type="text"        
+        placeholder="닉네임을 입력하세요"
         onChange={(e)=>displayNameHandler(e)}/>
-        <SignUpUserIdLable>userId</SignUpUserIdLable>
+        <SignUpUserIdLable>Email</SignUpUserIdLable>
         <SignUpUserIdInput 
         type="userId"
-        onChange={(e)=>userIdHandler(e)}/>
+        onChange={(e)=>userIdHandler(e)}/>        
+        {errorUserIdMessage?(<div style={{fontSize:'10px', color:'red', width:'80%'}}>{errorUserIdMessage}</div>)
+        :(<div style={{fontSize:'10px', width:'80%'}}>gmail과 naver형식으로 입력하세요</div>)}        
         <SignUpPasswordLable>Password</SignUpPasswordLable>
         <SignUpPasswordInput 
         type="password"
         ref ={passwordRef}
-        onChange={(e)=>passwordHandler(e)}/>  
+        onChange={(e)=>passwordHandler(e)}/> 
+         {errorPasswordMessage?(<div style={{fontSize:'10px', color:'red', width:'80%'}}>{errorPasswordMessage}</div>)
+        :(<div style={{fontSize:'10px', width:'80%'}}>대소문자 구분없이 숫자 조합 8글자이상</div>)}  
         <SignUpButtonContainer>
             <SignUpButton onClick={(e)=>signUpcConfirmHandler(e)}>Sign up</SignUpButton>
         </SignUpButtonContainer>      
