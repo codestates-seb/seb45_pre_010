@@ -14,6 +14,7 @@ function SignUpInputBox({setIsLogin, setToken}){
     const [displayName, setDisplayName] = useState('');
     const [userId, setUserId] = useState('');
     const [password, setPassword]= useState('');
+    const [errorNickMessage , setErrorNickMessage] = useState('');
     const [errorUserIdMessage, setErrorUserIdMessage] = useState('');
     const [errorPasswordMessage, setErrorPasswordMEssage]= useState('');
 
@@ -23,15 +24,25 @@ function SignUpInputBox({setIsLogin, setToken}){
 
     const displayNameHandler = (e) =>{
         setDisplayName(e.target.value);
+        if(errorNickMessage){
+            setErrorNickMessage('');
+        }
     };
 
     const userIdHandler = (e)=>{        
         setUserId(e.target.value);
+        if(errorUserIdMessage){
+            setErrorUserIdMessage('');
+        }
     }
 
     const passwordHandler = (e)=>{
-        setPassword(e.target.value);       
+        setPassword(e.target.value);    
+        if(errorPasswordMessage){
+            setErrorPasswordMEssage('');
+        }   
     }
+
 
     const signUpcConfirmHandler = async(e) =>{
                    
@@ -50,19 +61,17 @@ function SignUpInputBox({setIsLogin, setToken}){
             }      
         }
 
+        else if(displayName === ''){
+            setErrorNickMessage('닉네임을 입력하세요');
+        }
+
         else{          
-            e.preventDefault();
-            //왜그런지 모르겠는데 이거없으면 작동이 안됨.  
+            
             //'http://localhost:8080/users'
             //'http://localhost:4000/signup'
           
-            try{
-                
-            if(displayName===''){
-                setDisplayName(userId);
-            }
-                
-                const res =await axios.post('http://localhost:4000/signup', 
+            try{   
+                const res =await axios.post( 'http://localhost:4000/signup', 
                 {nickname:displayName, email:userId, password:password}
                 )
                 const token = res.data;
@@ -88,6 +97,8 @@ function SignUpInputBox({setIsLogin, setToken}){
         type="text"        
         placeholder="닉네임을 입력하세요"
         onChange={(e)=>displayNameHandler(e)}/>
+        {errorNickMessage?(<div style={{fontSize:'10px', color:'red', width:'80%'}}>{errorUserIdMessage}</div>)
+        :(<div></div>)}
         <SignUpUserIdLable>Email</SignUpUserIdLable>
         <SignUpUserIdInput 
         type="userId"
