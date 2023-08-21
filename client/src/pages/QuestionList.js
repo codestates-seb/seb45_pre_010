@@ -19,7 +19,7 @@ function QuestionList() {
     setPageInfo(data.pageInfo);              //페이지정보 업데이트
   };
 
-  /*
+
   const userId = localStorage.getItem("Id");    // localStorage - 세션이 바뀌어도 저장한 데이터가 유지
                                               // getItem() - value 읽어 오기
   const click = (e) => {
@@ -29,15 +29,15 @@ function QuestionList() {
         "게시물 등록 시 로그인이 필요합니다."
       );
       if(loginAlert){
-        navigate("../");  //로그인페이지 물어보기
+        navigate("../login");  
       }
     } else {
-      navigate("../questionDetail");
+      navigate("../write");
     }
  
   
   };
-*/
+
   const moveQustion = ({ id }) => {
     navigate(`/questionlist/${id}`);
   };
@@ -52,7 +52,7 @@ function QuestionList() {
     <Wrap>
       <div className="buttonContainer">
         <h1>All Questions</h1>
-        <WriteButton >Ask Question</WriteButton> {/*onClick={click}*/}
+        <WriteButton onClick={click}>Ask Question</WriteButton>
       </div>
       <div className="questionsContainer">
         <ListContainer>
