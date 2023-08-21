@@ -9,7 +9,7 @@ import QuestionDetail from "./pages/QuestionDetail";
 import Login from "./pages/login/Login";
 import Write from "./pages/Write";
 import SignUp from "./pages/signup/SignUp";
-import Sidebar from "./pages/mypage/Sidebar";
+import Sidebar from "./pages/sidebar/Sidebar";
 import { useState, useEffect } from "react";
 
 function App() {
@@ -19,13 +19,15 @@ function App() {
 
   useEffect(()=>{setUserInfo(token);
   },[token]);
+
+  
    //백앤드와 연계시 가장먼저 바꿔야됨.!!
 
   
   return (
     <BrowserRouter>
       <Header isLogin={isLogin} setIsLogin={setIsLogin} setToken={setToken}/>
-      {isLogin?(<Sidebar userInfo={userInfo}/>):('')}
+      {isLogin?(<Sidebar userInfo={userInfo} setUserInfo={setUserInfo}/>):('')}
       <MainContainer>
         <Routes>
           <Route path="/" element={<QuestionList />} />

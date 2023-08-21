@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import Modify from "../../components/ modify/modify";
 
-function Sidebar({userInfo}){
+function Sidebar({userInfo , setUserInfo}){
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -12,7 +12,7 @@ function Sidebar({userInfo}){
             <UserImg src="https://source.unsplash.com/random/130x130/?cat"/>
             <NickName>{userInfo.nickname}</NickName>
             <Write to="/write">글쓰기</Write>
-            <Modify setIsOpen={setIsOpen} isOpen={isOpen}>정보수정</Modify>
+            <Modify userInfo={userInfo}setIsOpen={setIsOpen} isOpen={isOpen} setUserInfo={setUserInfo}>정보수정</Modify>
         </SideCon>       
     </SideStyle>);
 }
@@ -24,7 +24,7 @@ export const SideStyle=styled.section`
     background-color: hsl(205,46%,92%);
     left:0;
     width: 15%;
-    top : 55px;
+    top : 56px;
     bottom: 50px;
 `;
 export const SideCon = styled.div`

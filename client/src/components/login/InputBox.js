@@ -4,9 +4,11 @@ import { InputBoxContainer, InputForm, UserIdText,
 , ConfirmButtonContainer, ConfirmButton  } from "./InputBox.styled";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 function InputBox({setIsLogin, setToken}){
+    const navigate = useNavigate();
     const [userId, setuserId] = useState('');
     const [password , setPassword] = useState('');
     const [errorMessage, setErrorMessage]= useState('');
@@ -27,6 +29,7 @@ function InputBox({setIsLogin, setToken}){
             console.log(token);
             setToken(token);
             setIsLogin(true);
+            navigate('/');
         }
         catch(error){
             setErrorMessage('ID와 PW를 확인하세요');
