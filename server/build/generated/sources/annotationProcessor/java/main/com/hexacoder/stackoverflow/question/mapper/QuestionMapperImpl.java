@@ -5,15 +5,19 @@ import com.hexacoder.stackoverflow.question.dto.AllQuestionDto;
 import com.hexacoder.stackoverflow.question.dto.AskQuestionDto;
 import com.hexacoder.stackoverflow.question.dto.QuestionDetailDto;
 import com.hexacoder.stackoverflow.question.dto.QuestionPatchDto;
+import com.hexacoder.stackoverflow.question.dto.ResponseDto;
 import com.hexacoder.stackoverflow.question.entity.Question;
+import com.hexacoder.stackoverflow.question.entity.QuestionTag;
+import com.hexacoder.stackoverflow.tag.entity.Tag;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-18T18:25:54+0900",
+    date = "2023-08-21T14:54:32+0900",
     comments = "version: 1.5.3.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.2.1.jar, environment: Java 17.0.8 (IBM Corporation)"
 )
 @Component
@@ -88,9 +92,41 @@ public class QuestionMapperImpl implements QuestionMapper {
         long userId = 0L;
         String nickname = null;
         List<AnswerResponseDto> answerList = null;
+        List<Tag> questionTag = null;
 
-        QuestionDetailDto questionDetailDto = new QuestionDetailDto( questionId, title, content, userId, nickname, answerList, createdAt );
+        QuestionDetailDto questionDetailDto = new QuestionDetailDto( questionId, title, content, userId, nickname, answerList, createdAt, questionTag );
 
         return questionDetailDto;
+    }
+
+    @Override
+    public List<ResponseDto> questionsToResponse(List<Question> questions) {
+        if ( questions == null ) {
+            return null;
+        }
+
+        List<ResponseDto> list = new ArrayList<ResponseDto>( questions.size() );
+        for ( Question question : questions ) {
+            list.add( questionToResponseDto( question ) );
+        }
+
+        return list;
+    }
+
+    protected ResponseDto questionToResponseDto(Question question) {
+        if ( question == null ) {
+            return null;
+        }
+
+        List<QuestionTag> questionTags = null;
+
+        List<QuestionTag> list = question.getQuestionTags();
+        if ( list != null ) {
+            questionTags = new ArrayList<QuestionTag>( list );
+        }
+
+        ResponseDto responseDto = new ResponseDto( questionTags );
+
+        return responseDto;
     }
 }
