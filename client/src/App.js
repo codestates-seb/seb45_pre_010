@@ -28,7 +28,8 @@ function App() {
       {isLogin?(<Sidebar userInfo={userInfo}/>):('')}
       <MainContainer>
         <Routes>
-          <Route path="/" element={isLogin?(<QuestionList />):(<Login setIsLogin={setIsLogin} setToken={setToken}/>)} />
+          <Route path="/" element={<QuestionList />} />
+          <Route path="/login" element={<Login setIsLogin={setIsLogin} setToken={setToken}/>} />
           <Route path="/QuestionDetail" element={<QuestionDetail />} />          
           <Route path="/signup" element={<SignUp setIsLogin={setIsLogin} setToken={setToken} />}/>
           <Route path="/Write" element={<Write />} />          

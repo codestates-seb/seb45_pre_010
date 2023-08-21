@@ -7,7 +7,7 @@ const Header = ({isLogin, setIsLogin, setToken}) => {
   const navigate=useNavigate();
 
   const LoginHandeler = () => {
-    setIsLogin(!isLogin);
+    navigate('/login')
   }; //이것도 아마 쓸일이 없을거 같습니다. 근데 확신은 못해서 일단 남겨놓겠습니다.
 
   const LogOutHandeler = () => {  
