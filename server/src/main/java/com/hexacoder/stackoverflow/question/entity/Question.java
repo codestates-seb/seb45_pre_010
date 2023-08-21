@@ -4,6 +4,7 @@ package com.hexacoder.stackoverflow.question.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hexacoder.stackoverflow.Answer.AnswerEntity.Answer;
 import com.hexacoder.stackoverflow.question.audit.Auditable;
+import com.hexacoder.stackoverflow.tag.entity.Tag;
 import com.hexacoder.stackoverflow.user.entity.UserEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
@@ -44,6 +46,9 @@ public class Question extends Auditable {
     @Column(nullable = false, name = "CREATED_AT")
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JsonIgnore
+    private List<QuestionTag> questionTags = new ArrayList<>();
 
 
     public Question(String title, String content) {
@@ -51,6 +56,22 @@ public class Question extends Auditable {
         this.content = content;
         this.createdAt = LocalDateTime.now();
     }
+
+    public void addQuestionTags(List<Tag> tags) {
+        List<QuestionTag> questionTags = tags.stream()
+                .map((tag) -> new QuestionTag(this, tag))
+                .collect(Collectors.toList());
+
+        for (QuestionTag questionTag : questionTags) {
+            addQuestionTag(questionTag);
+        }
+
+    }
+
+    public void addQuestionTag(QuestionTag questionTag) {
+        questionTags.add(questionTag);
+    }
+
 
 
 
