@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-21T14:54:31+0900",
-    comments = "version: 1.5.3.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.2.1.jar, environment: Java 17.0.8 (IBM Corporation)"
+    date = "2023-08-21T18:00:19+0900",
+    comments = "version: 1.5.3.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.2.1.jar, environment: Java 19.0.2 (Oracle Corporation)"
 )
 @Component
 public class UserMapperImpl implements UserMapper {
@@ -20,13 +20,13 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        UserEntity.UserEntityBuilder userEntity = UserEntity.builder();
+        UserEntity userEntity = new UserEntity();
 
-        userEntity.email( userPostDto.getEmail() );
-        userEntity.password( userPostDto.getPassword() );
-        userEntity.nickname( userPostDto.getNickname() );
+        userEntity.setEmail( userPostDto.getEmail() );
+        userEntity.setPassword( userPostDto.getPassword() );
+        userEntity.setNickname( userPostDto.getNickname() );
 
-        return userEntity.build();
+        return userEntity;
     }
 
     @Override
@@ -58,12 +58,12 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        UserEntity.UserEntityBuilder userEntity = UserEntity.builder();
+        UserEntity userEntity = new UserEntity();
 
-        userEntity.userId( userPatchDto.getUserId() );
-        userEntity.password( userPatchDto.getPassword() );
-        userEntity.nickname( userPatchDto.getNickname() );
+        userEntity.setUserId( userPatchDto.getUserId() );
+        userEntity.setPassword( userPatchDto.getPassword() );
+        userEntity.setNickname( userPatchDto.getNickname() );
 
-        return userEntity.build();
+        return userEntity;
     }
 }

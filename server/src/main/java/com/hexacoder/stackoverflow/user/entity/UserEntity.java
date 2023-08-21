@@ -12,7 +12,7 @@ import java.util.*;
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder.Default
+//@Builder.Default
 public class UserEntity extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
