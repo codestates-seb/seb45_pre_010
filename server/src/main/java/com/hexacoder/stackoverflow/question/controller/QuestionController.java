@@ -44,12 +44,31 @@ public class QuestionController {
 
     }
 
+//    @PostMapping("/questions/ask")
+//    public ResponseEntity postQuestion(
+//            UriComponentsBuilder uriComponentsBuilder,
+//            @Valid @RequestBody AskQuestionDto.Post requestBody) {
+//
+//        Question question = questionService.createQuestion(requestBody);
+//        UriComponents uriComponents = uriComponentsBuilder.path("/questions/ask/{id}").buildAndExpand(question.getQuestionId());
+//
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.setLocation(uriComponents.toUri());
+//        return new ResponseEntity(httpHeaders, HttpStatus.CREATED);
+//    }
+
     @PostMapping("/questions/ask")
     public ResponseEntity postQuestion(
             UriComponentsBuilder uriComponentsBuilder,
             @Valid @RequestBody AskQuestionDto.Post requestBody) {
 
         Question question = questionService.createQuestion(requestBody);
+
+        // 태그 생성
+        for (AskQuestionDto.QuestionTagDto tagDto : requestBody.getQuestionTag()) {
+            questionTagService.createTagAndConnectToQuestion(tagDto.getTagName(), question.getQuestionId());
+        }
+
         UriComponents uriComponents = uriComponentsBuilder.path("/questions/ask/{id}").buildAndExpand(question.getQuestionId());
 
         HttpHeaders httpHeaders = new HttpHeaders();
