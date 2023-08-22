@@ -2,7 +2,7 @@ import { Container, Wrapper, LogoContainer, Logo, SignUpText, SignUpLink } from 
 import GoogleButton from "../../components/login/GoogleButton";
 import InputBox from "../../components/login/InputBox";
 
-function Login() {
+function Login({setIsLogin, setToken}) {
   return (
     <Container>
       <Wrapper>
@@ -10,7 +10,7 @@ function Login() {
           <Logo src="stack-overflow-logo.png" />
         </LogoContainer>
         <GoogleButton />
-        <InputBox />
+        <InputBox setIsLogin={setIsLogin} setToken={setToken}/>
         <div>
           <SignUpText>Don't you have acount?
             <SignUpLink href={'http://localhost:3000/signup'} >

@@ -1,56 +1,63 @@
-import { InputBoxContainer, InputForm, EmailText, 
-    EmailContainer, InputEmail, EmailErrorMassage,
-    PasswordText, PasswordContainer, InputPassword, PasswordErrorMassage
+import { InputBoxContainer, InputForm, UserIdText, 
+    UserIdContainer, InputUserId, 
+    PasswordText, PasswordContainer, InputPassword
 , ConfirmButtonContainer, ConfirmButton  } from "./InputBox.styled";
-import { userData } from "../../dummydata/usetData";
 import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function InputBox(){
-    const [email, setEmail] = useState('');
+
+function InputBox({setIsLogin, setToken}){
+    const navigate = useNavigate();
+    const [userId, setuserId] = useState('');
     const [password , setPassword] = useState('');
+    const [errorMessage, setErrorMessage]= useState('');
 
-    const emailHandler = (e) =>{
-        setEmail(e.target.value);        
+    const userIdHandler = (e) =>{
+        setuserId(e.target.value);        
     }
 
     const passwordHandler = (e) =>{
         setPassword(e.target.value);        
     }
 
-    const loginHandler = (e) =>{
-        const [user] = userData.filter((el)=>el.email === email);
-       
-        console.log(user);
+    const loginHandler =async (e) =>{
         e.preventDefault();
-        if(user.password === password){
-            window.location.href = 'http://localhost:3000/'
+        try{
+            //"http://localhost:8080/users/login"
+            const res = await axios.post('http://localhost:4000', {userId, password})
+            const token = res.data;
+            console.log(token);
+            setToken(token);
+            setIsLogin(true);
+            navigate('/');
+        }
+        catch(error){
+            setErrorMessage('ID와 PW를 확인하세요');
         }
     }
-    
-
-
 
     return (
         <InputBoxContainer>
           <InputForm>
-            <EmailText>Email</EmailText>
-            <EmailContainer>
-                <InputEmail
-                type = 'email'
-                onChange={(e)=>emailHandler(e)}
-                />
-                <EmailErrorMassage>email 에러</EmailErrorMassage>
-            </EmailContainer>
-            <PasswordText/>Password
+            <UserIdText>Email</UserIdText>
+            <UserIdContainer>
+                <InputUserId
+                type = 'userId'
+                onChange={(e)=>userIdHandler(e)}
+                />               
+            </UserIdContainer>
+            <PasswordText>Password</PasswordText>
             <PasswordContainer>
                 <InputPassword
                 type ='password'
-                onChange={(e)=>passwordHandler(e)}/>
-                <PasswordErrorMassage>password에러</PasswordErrorMassage>
-            </PasswordContainer>
+                onChange={(e)=>passwordHandler(e)}/>                
+            </PasswordContainer>           
             <ConfirmButtonContainer>
                 <ConfirmButton onClick={(e)=>loginHandler(e)}>Login</ConfirmButton>
             </ConfirmButtonContainer>
+            {errorMessage?(<div style={{color:'red', fontSize:'10px'}}>{errorMessage}</div>)
+            :(<div style={{fontSize:'10px'}}>id와 pw를 입력하세요</div>)}
           </InputForm>       
         </InputBoxContainer>
     );
