@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import styled from "styled-components";
 import Editor from "../write/Editor";
 
@@ -9,43 +10,54 @@ const Answer = () => {
   };
 
   // 답변 리스트 더미 데이터
-  const answerData = [
-    {
-      id: "test@gmail.com",
-      content: "<p>답변1 입니다</p>",
-      created_at: "2023-8-17",
-    },
-    {
-      id: "gildong@gmail.com",
-      content: "<p>답변2 입니다</p>",
-      created_at: "2023-8-16",
-    },
-    {
-      id: "amuga@gmail.com",
-      content: "<p>답변3 입니다</p>",
-      created_at: "2023-8-15",
-    },
-  ];
+  // const answerData = [
+  //   {
+  //     id: "test@gmail.com",
+  //     content: "<p>답변1 입니다</p>",
+  //     created_at: "2023-8-17",
+  //   },
+  //   {
+  //     id: "gildong@gmail.com",
+  //     content: "<p>답변2 입니다</p>",
+  //     created_at: "2023-8-16",
+  //   },
+  //   {
+  //     id: "amuga@gmail.com",
+  //     content: "<p>답변3 입니다</p>",
+  //     created_at: "2023-8-15",
+  //   },
+  // ];
+
+  const [answerData, setAnswerData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000");
+        setAnswerData(response.data);
+      } catch (error) {
+        console.error("데이터 불러오기 실패:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // 답변 등록 시 post 데이터
-  const writeData = {
-    content: bodyValue,
-    created_at: new Date().toLocaleDateString().replace(/\./g, "").replace(/\s/g, "-"),
+  const handleSubmit = async () => {
+    const data = {
+      content: bodyValue,
+      created_at: new Date().toLocaleDateString().replace(/\./g, "").replace(/\s/g, "-"),
+    };
+
+    try {
+      await axios.post("http://localhost:4000", data);
+      console.log("데이터가 성공적으로 등록되었습니다.");
+      console.log(data);
+    } catch (error) {
+      console.error("데이터 등록 실패:", error);
+    }
   };
-
-  // const handleSubmit = async () => {
-  //   const data = {
-  //     content: bodyValue,
-  //     created_at: new Date().toLocaleDateString(),
-  //   };
-
-  //   try {
-  //     await axios.post('http://localhost:3001/data', newData);
-  //     console.log('데이터가 성공적으로 등록되었습니다.');
-  //   } catch (error) {
-  //     console.error('데이터 등록 실패:', error);
-  //   }
-  // }
 
   return (
     <>
@@ -53,6 +65,7 @@ const Answer = () => {
 
       {answerData.map((answer, index) => (
         <AnswerBox key={index}>
+          <DeletBtn>delete</DeletBtn>
           <AnswerBody dangerouslySetInnerHTML={{ __html: answer.content }}></AnswerBody>
           <AnswerUserInfo>
             <AnswerUser>{answer.id}</AnswerUser>
@@ -63,7 +76,7 @@ const Answer = () => {
 
       <AnswerTit>Your Answer</AnswerTit>
       <Editor onChangeContents={onChangeContents} />
-      <SubmitBtn>Post Your Answer</SubmitBtn>
+      <SubmitBtn onClick={handleSubmit}>Post Your Answer</SubmitBtn>
     </>
   );
 };
@@ -79,8 +92,20 @@ const AnswerTit = styled.strong`
 `;
 
 const AnswerBox = styled.div`
+  position: relative;
   padding: 12px 0;
   border-top: 1px solid #e3e6e8;
+`;
+
+const DeletBtn = styled.button`
+  position: absolute;
+  right: 0;
+  top: 12px;
+  padding: 0 5px;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 4px;
+  color: #000;
 `;
 
 const AnswerBody = styled.div`
