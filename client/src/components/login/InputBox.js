@@ -24,6 +24,7 @@ function InputBox({setIsLogin, setToken}){
     const loginHandler =async (e) =>{
         e.preventDefault();
         try{
+            //"http://localhost:8080/users/login"
             const res = await axios.post('http://localhost:4000', {userId, password})
             const token = res.data;
             console.log(token);

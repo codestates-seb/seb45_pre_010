@@ -41,7 +41,6 @@ function Modify({userInfo, setUserInfo,isOpen , setIsOpen}) {
       },
   };
   const inputNickHdr = (e) =>{
-    console.log(newNick)
     setNewNick(e.target.value);
   }
   const inputPwHdr = (e) => {
@@ -68,7 +67,7 @@ function Modify({userInfo, setUserInfo,isOpen , setIsOpen}) {
     }
     setUserInfo(newInfo);
     setNewPw('');
-    console.log(newInfo)
+   // console.log(newInfo)
   }
 
 
