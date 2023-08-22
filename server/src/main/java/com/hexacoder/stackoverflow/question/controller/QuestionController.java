@@ -65,9 +65,9 @@ public class QuestionController {
         Question question = questionService.createQuestion(requestBody);
 
         // 태그 생성
-        for (AskQuestionDto.QuestionTagDto tagDto : requestBody.getQuestionTag()) {
-            questionTagService.createTagAndConnectToQuestion(tagDto.getTagName(), question.getQuestionId());
-        }
+//        for (AskQuestionDto.QuestionTagDto tagDto : requestBody.getQuestionTag()) {
+//            questionTagService.createTagAndConnectToQuestion(tagDto.getTagName(), question.getQuestionId());
+//        }
 
         UriComponents uriComponents = uriComponentsBuilder.path("/questions/ask/{id}").buildAndExpand(question.getQuestionId());
 
