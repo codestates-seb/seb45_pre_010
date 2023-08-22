@@ -21,13 +21,13 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
     const {userId, password} = req.body;
-    const [temp]  = USER_DATA.filter((el)=>el.userId===userId && el.password===password)
+    const [temp]  = USER_DATA.filter((el)=>el.email===userId && el.password===password)
     
     console.log(temp);   
       
     if (temp) {
      
-      res.json('token받아라');
+      res.json(temp);
     } else {
       res.status(400).json({ error: '데이터가 유효하지 않습니다.' });
     }
