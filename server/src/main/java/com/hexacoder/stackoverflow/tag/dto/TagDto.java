@@ -15,9 +15,6 @@ public class TagDto {
         @JsonProperty(value = "tagName")
         private String tagName;
 
-        @JsonProperty(value = "tagContent")
-        private String tagContent;
-
         public Tag toEntity() {
             return new Tag(this.tagName);
         }
