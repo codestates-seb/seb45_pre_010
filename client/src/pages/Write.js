@@ -42,7 +42,7 @@ const Write = () => {
     };
 
     try {
-      await axios.post("http://localhost:4000", data);
+      await axios.post("http://localhost:8080/questions/ask", data);
       console.log("데이터가 성공적으로 등록되었습니다.");
       console.log(data);
     } catch (error) {

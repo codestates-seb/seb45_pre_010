@@ -67,7 +67,7 @@ function SignUpInputBox({ setIsLogin, setToken }) {
       //'http://localhost:4000/signup'
 
       try {
-        const res = await axios.post("http://localhost:4000/signup", {
+        const res = await axios.post("http://localhost/:8080/users/signin", {
           nickname: displayName,
           email: userId,
           password: password,
