@@ -18,6 +18,5 @@ public class QuestionUserProfileDto {
     private Question question;
     private UserEntity user;
     private List<Answer> answerList;
-    //private Profile profile;
     private List<Tag> tagList;
 }

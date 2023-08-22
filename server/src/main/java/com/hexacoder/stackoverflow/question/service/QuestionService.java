@@ -64,46 +64,6 @@ public class QuestionService {
         this.questionTagService = questionTagService;
     }
 
-//    @Transactional
-//    public Question createQuestion(AskQuestionDto.Post requestBody) {
-//
-//        // Dto로 받아온 데이터들을 Entity 객체로 만든 후
-//        // Repository를 통해 데이터를 데이터베이스에 추가해야함
-//
-//
-//        // Question Dto -> Question Entity 만듬
-//        Question question = questionMapper.askquestionPostToQuestion(requestBody);
-//
-//        UserEntity findUser = userService.findUser(requestBody.getUserId());
-//
-//
-//        question.addUser(findUser);
-//
-//        List<TagDto> questionTags = requestBody.getQuestionTag();
-//        if (questionTags == null || questionTags.isEmpty()) {
-//            throw new IllegalArgumentException("질문 태그가 비어있습니다.");
-//        }
-//
-//        List<Long> tagNames = questionTags.stream()
-//                .map(TagDto::getTagName)
-//                .filter(Objects::nonNull)  // Remove null tagIds
-//                .distinct()
-//                .collect(Collectors.toList());
-//
-////        if (tagIds.isEmpty()) {
-////            throw new IllegalArgumentException("태그 ID가 비어있습니다.");
-////        }
-//
-//        List<Tag> actualTags = tagRepository.findAllById(tagNames);
-//
-//        if (tagIds.size() != actualTags.size()) {
-//            throw new EntityNotFoundException("태그가 존재하지 않습니다.");
-//        }
-//
-//        question.addQuestionTags(actualTags);
-//        Question savedQuestion = questionRepository.save(question);
-//        return savedQuestion;
-//    }
 
 
     public Question createQuestion(AskQuestionDto.Post requestBody) {
