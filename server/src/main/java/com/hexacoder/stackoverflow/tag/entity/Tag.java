@@ -22,7 +22,7 @@ public class Tag {
     @Column(name = "tag_id")
     private Long tagId;
 
-    @Column(name = "tag_name", nullable = false)
+    @Column(nullable = false, unique = true)
     private String tagName;
 
 

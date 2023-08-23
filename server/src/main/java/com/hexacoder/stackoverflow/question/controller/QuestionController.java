@@ -44,17 +44,12 @@ public class QuestionController {
 
     }
 
-
-
-    //질문 등록
     @PostMapping("/questions/ask")
     public ResponseEntity postQuestion(
             UriComponentsBuilder uriComponentsBuilder,
             @Valid @RequestBody AskQuestionDto.Post requestBody) {
 
         Question question = questionService.createQuestion(requestBody);
-
-
         UriComponents uriComponents = uriComponentsBuilder.path("/questions/ask/{id}").buildAndExpand(question.getQuestionId());
 
         HttpHeaders httpHeaders = new HttpHeaders();

@@ -20,17 +20,7 @@ public class TagService {
 
     @Transactional
     public Long createTag(TagDto.Request requestBody) {
-        String tagName = requestBody.getTagName();
-
-        // 이미 존재하는 태그인지 검사
-        Tag existingTag = tagRepository.findByTagName(tagName);
-        if (existingTag != null) {
-            return existingTag.getTagId(); // 이미 존재하는 태그를 반환
-        }
-
-        // 존재하지 않는 태그라면 새로 생성
-        Tag newTag = new Tag(tagName);
-        Tag savedTag = tagRepository.save(newTag);
+        Tag savedTag = tagRepository.save(requestBody.toEntity());
         return savedTag.getTagId();
     }
 

@@ -23,7 +23,7 @@ public class QuestionTag extends Auditable {
     private Question question;
 
     @ManyToOne
-    @JoinColumn(name = "tag_name")
+    @JoinColumn(name = "tag_id")
     private Tag tag;
 
     public QuestionTag(Question question, Tag tag) {

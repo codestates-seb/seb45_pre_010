@@ -13,13 +13,14 @@ import com.hexacoder.stackoverflow.tag.entity.Tag;
 import com.hexacoder.stackoverflow.tag.repository.TagRepository;
 import com.hexacoder.stackoverflow.user.entity.UserEntity;
 import com.hexacoder.stackoverflow.user.service.UserService;
-
-
-
+import com.hexacoder.stackoverflow.question.dto.AskQuestionDto.TagDto;
 
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,38 +65,40 @@ public class QuestionService {
         this.questionTagService = questionTagService;
     }
 
-
-
+    @Transactional
     public Question createQuestion(AskQuestionDto.Post requestBody) {
+
+        // Dto로 받아온 데이터들을 Entity 객체로 만든 후
+        // Repository를 통해 데이터를 데이터베이스에 추가해야함
+
+
+        // Question Dto -> Question Entity 만듬
         Question question = questionMapper.askquestionPostToQuestion(requestBody);
+
         UserEntity findUser = userService.findUser(requestBody.getUserId());
+
 
         question.addUser(findUser);
 
-        List<AskQuestionDto.QuestionTagDto> questionTags = requestBody.getQuestionTag();
+        List<TagDto> questionTags = requestBody.getQuestionTag();
         if (questionTags == null || questionTags.isEmpty()) {
             throw new IllegalArgumentException("질문 태그가 비어있습니다.");
         }
 
-        List<Tag> actualTags = new ArrayList<>();
+        List<Long> tagIds = questionTags.stream()
+                .map(TagDto::getTagId)
+                .filter(Objects::nonNull)  // Remove null tagIds
+                .distinct()
+                .collect(Collectors.toList());
 
-        for (AskQuestionDto.QuestionTagDto tagDto : questionTags) {
-            String tagName = tagDto.getTagName();
-            if (tagName != null && !tagName.trim().isEmpty()) {
-                Tag existingTag = tagRepository.findByTagName(tagName);
-                if (existingTag == null) {
-                    Tag tag = new Tag(tagName);
-                    tag = tagRepository.save(tag);
-                    actualTags.add(tag);
-                } else {
-                    // 이미 존재하는 태그라면 추가하지 않고 기존 태그만 사용
-                    actualTags.add(existingTag);
-                }
-            }
+        if (tagIds.isEmpty()) {
+            throw new IllegalArgumentException("태그 ID가 비어있습니다.");
         }
 
-        if (actualTags.isEmpty()) {
-            throw new IllegalArgumentException("질문 태그가 비어있습니다.");
+        List<Tag> actualTags = tagRepository.findAllById(tagIds);
+
+        if (tagIds.size() != actualTags.size()) {
+            throw new EntityNotFoundException("태그가 존재하지 않습니다.");
         }
 
         question.addQuestionTags(actualTags);
@@ -105,27 +108,21 @@ public class QuestionService {
 
 
 
-
     @Transactional(readOnly = true)
     public QuestionDetailDto findQuestionDetail(long questionId) {
-        Question findQuestion = findQuestion(questionId);
+        Question findQuestion = findVerifiedQuestionByQuery(questionId);
         UserEntity findUser = userService.findUser(findQuestion.getUser().getUserId());
         List<Answer> finAnswerList = findQuestion.getAnswers();
         List<Tag> findTagList = questionTagService.getTagsByQuestionId(questionId);
-
-        // 중복된 태그 제거
-        Set<Tag> uniqueTags = new HashSet<>(findTagList);
-
         QuestionUserProfileDto questionUserProfileDto = new QuestionUserProfileDto();
 
         questionUserProfileDto.setQuestion(findQuestion);
         questionUserProfileDto.setUser(findUser);
         questionUserProfileDto.setAnswerList(finAnswerList);
-        questionUserProfileDto.setTagList(new ArrayList<>(uniqueTags));
+        questionUserProfileDto.setTagList(findTagList);
 
         return questionMapper.questionToResponse(questionUserProfileDto);
     }
-
 
     public Page<Question> findQuestions(int page, int size) {
         return questionRepository.findAll(

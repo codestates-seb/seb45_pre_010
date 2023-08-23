@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.Mapping;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -64,7 +62,8 @@ public interface QuestionMapper {
     //질문 상세
     QuestionDetailDto questionToQuestionDetail(Question question);
 
-    default QuestionDetailDto questionToResponse(QuestionUserProfileDto questionUserProfileDto) {
+    default QuestionDetailDto questionToResponse(
+            QuestionUserProfileDto questionUserProfileDto) {
         if (questionUserProfileDto == null) {
             return null;
         } else {
@@ -82,6 +81,7 @@ public interface QuestionMapper {
                 createdAt = questionCreatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             }
 
+
             questionId = questionUserProfileDto.getQuestion().getQuestionId();
             title = questionUserProfileDto.getQuestion().getTitle();
             content = questionUserProfileDto.getQuestion().getContent();
@@ -89,28 +89,28 @@ public interface QuestionMapper {
             nickname = questionUserProfileDto.getUser().getNickname();
             questionTag = questionUserProfileDto.getTagList();
 
-            questionUserProfileDto.getAnswerList().forEach(answer -> {
-                UserEntity answerUser = answer.getUser();
 
-                AnswerResponseDto answerResponse = new AnswerResponseDto();
-                answerResponse.setUserId(answerUser.getUserId());
-                answerResponse.setAnswerId(answer.getAnswerId());
-                answerResponse.setContent(answer.getContent());
-                answerResponse.setNickname(answerUser.getNickname());  // Fix this line
-                answerResponse.setCreatedAt(answer.getCreatedAt());
-                answerList.add(answerResponse);
-            });
+            questionUserProfileDto.getAnswerList().stream()
+                    .forEach(answer -> {
+                        UserEntity answerUser = answer.getUser();
+
+                        AnswerResponseDto answerResponse = new AnswerResponseDto();
+
+                        answerResponse.setUserId(answerUser.getUserId());
+                        answerResponse.setAnswerId(answer.getAnswerId());
+                        answerResponse.setContent(answer.getContent());
+                        answerResponse.setNickname(answerResponse.getNickname());
+                        answerResponse.setCreatedAt(answer.getCreatedAt());
+                        answerList.add(answerResponse);
+                    });
+
 
             createdAt = questionUserProfileDto.getQuestion().getCreatedAt() != null ?
                     questionUserProfileDto.getQuestion().getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) : null;
 
-            // 중복 태그 제거
-            Set<Tag> uniqueTags = new HashSet<>(questionTag);
-            List<Tag> distinctTags = new ArrayList<>(uniqueTags);
 
-            QuestionDetailDto questionDetailDto = new QuestionDetailDto(
-                    questionId, title, content, userId, nickname, answerList, createdAt, distinctTags);
-
+            QuestionDetailDto questionDetailDto =
+                    new QuestionDetailDto(questionId, title, content, userId, nickname, answerList, createdAt, questionTag);
             return questionDetailDto;
         }
     }
