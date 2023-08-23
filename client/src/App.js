@@ -13,29 +13,31 @@ import Sidebar from "./pages/sidebar/Sidebar";
 import { useState, useEffect } from "react";
 
 function App() {
-  const [isLogin , setIsLogin] = useState(false);
-  const [token, setToken] = useState('');
-  const [userInfo, setUserInfo] =useState('');
+  const [isLogin, setIsLogin] = useState(false);
+  const [token, setToken] = useState("");
+  const [userInfo, setUserInfo] = useState("");
 
-  useEffect(()=>{setUserInfo(token);
-  },[token]);
+  useEffect(() => {
+    setUserInfo(token);
+  }, [token]);
 
-  
-   //백앤드와 연계시 가장먼저 바꿔야됨.!!
+  //백앤드와 연계시 가장먼저 바꿔야됨.!!
 
-  
   return (
     <BrowserRouter>
-      <Header isLogin={isLogin} setIsLogin={setIsLogin} setToken={setToken} setUserInfo={setUserInfo}/>
-      {isLogin?(<Sidebar userInfo={userInfo} setUserInfo={setUserInfo}
-      setIsLogin={setIsLogin} setToken={setToken} />):('')}
+      <Header isLogin={isLogin} setIsLogin={setIsLogin} setToken={setToken} setUserInfo={setUserInfo} />
+      {isLogin ? (
+        <Sidebar userInfo={userInfo} setUserInfo={setUserInfo} setIsLogin={setIsLogin} setToken={setToken} />
+      ) : (
+        ""
+      )}
       <MainContainer>
         <Routes>
           <Route path="/" element={<QuestionList />} />
-          <Route path="/login" element={<Login setIsLogin={setIsLogin} setToken={setToken}/>} />
-          <Route path="/QuestionDetail" element={<QuestionDetail />} />          
-          <Route path="/signup" element={<SignUp setIsLogin={setIsLogin} setToken={setToken} />}/>
-          <Route path="/Write" element={<Write />} />          
+          <Route path="/login" element={<Login setIsLogin={setIsLogin} setToken={setToken} />} />
+          <Route path="/QuestionDetail" element={<QuestionDetail />} />
+          <Route path="/signup" element={<SignUp setIsLogin={setIsLogin} setToken={setToken} />} />
+          <Route path="/Write" element={<Write userInfo={userInfo} />} />
         </Routes>
       </MainContainer>
       <Footer />

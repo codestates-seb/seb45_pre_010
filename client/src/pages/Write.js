@@ -5,7 +5,7 @@ import TitleInput from "../components/write/TitleInput";
 import Editor from "../components/write/Editor";
 import TagItem from "../components/write/TagItem";
 
-const Write = () => {
+const Write = ({ userInfo }) => {
   // 타이틀 상태
   const [titleValue, setTitleValue] = useState("");
   const handleTitleChange = (e) => {
@@ -35,10 +35,11 @@ const Write = () => {
 
   const handleSubmit = async () => {
     const data = {
+      userId: userInfo.userId,
       title: titleValue,
       content: bodyValue,
-      tag: tags,
-      created_at: new Date().toLocaleDateString().replace(/\./g, "").replace(/\s/g, "-"),
+      questionTag: tags,
+      // created_at: new Date().toLocaleDateString().replace(/\./g, "").replace(/\s/g, "-"),
     };
 
     try {
