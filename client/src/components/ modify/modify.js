@@ -1,7 +1,7 @@
 import Modal from 'react-modal';
 import React , {useState} from 'react';
 import styled from 'styled-components';
-
+import axios from 'axios';
 
 function Modify({userInfo, setUserInfo,isOpen , setIsOpen}) {
 
@@ -49,14 +49,28 @@ function Modify({userInfo, setUserInfo,isOpen , setIsOpen}) {
 
   const setNickHdr = () =>{
     const newInfo = {
-      //id: userInfo.id?,  <-- 나중에 서버랑 연결되면 손봐야됨.
+      userId : userInfo.userId,
       nickname : newNick,
       email : userInfo.email,
-      password : userInfo.password
+      createAt : userInfo.createAt
     }
+    
     setUserInfo(newInfo);
     setNewNick('');
   }
+
+  // const setNickHdr = async () =>{
+  //   try{
+  //     await axios.patch(`http://localhost:8080/users/update/${userInfo.userId}`, {
+  //     //보낼 데이터
+  //     }
+
+  //     );
+  //   }
+  //   catch(e){
+  //     console.log(e.response.data);
+  //   }
+  // }
 
   const setPwHdr = () =>{
     const newInfo = {

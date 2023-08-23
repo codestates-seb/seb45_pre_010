@@ -2,10 +2,27 @@ import styled from "styled-components"
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Modify from "../../components/ modify/modify";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function Sidebar({userInfo , setUserInfo}){
+function Sidebar({userInfo , setUserInfo, setToken, setIsLogin}){
 
+    const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false);
+
+    const deleteHdr = async () =>{
+        try{
+            await axios.delete(`http://localhost:8080/users/delete/${userInfo.userId}`);
+            setIsLogin(false);
+            setToken('');
+            setUserInfo('');
+            navigate('/');
+        }
+        catch(e){
+            console.log(e.response.data);
+        }
+        console.log(userInfo);
+    }
 
     return(<SideStyle>
         <SideCon>
@@ -13,6 +30,7 @@ function Sidebar({userInfo , setUserInfo}){
             <NickName>{userInfo.nickname}</NickName>
             <Write to="/write">글쓰기</Write>
             <Modify userInfo={userInfo}setIsOpen={setIsOpen} isOpen={isOpen} setUserInfo={setUserInfo}>정보수정</Modify>
+            <Delete onClick={()=>deleteHdr()}>회원탈퇴</Delete>
         </SideCon>       
     </SideStyle>);
 }
@@ -39,7 +57,7 @@ export const SideCon = styled.div`
 
 export const UserImg = styled.img`
     display: flex;
-    width: 55%;
+    width: 57%;
     height: 20%;
     margin-top : 20%;
     border-radius: 50%;
@@ -47,6 +65,8 @@ export const UserImg = styled.img`
 
 export const NickName = styled.span`
     margin-top : 10%;    
+    font-size: 30px;
+    font-weight: 100;
   
 `
 export const Write =styled(Link)`
@@ -54,8 +74,11 @@ export const Write =styled(Link)`
   
 `
 
-export const ModifyInfo = styled.div`
-    margin-top : 10%;       
-    cursor: pointer;
-     
+export const Delete = styled.div`
+  font-family: inherit;
+  font-weight: 800;
+  margin-top : 10%;
+  cursor: pointer;
+  color : #525960;
+  font-size : 16px;
 `
