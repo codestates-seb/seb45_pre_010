@@ -13,6 +13,7 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+
 function SignUpInputBox({ setIsLogin, setToken }) {
   const navigate = useNavigate();
   const passwordRef = useRef("");
@@ -63,11 +64,11 @@ function SignUpInputBox({ setIsLogin, setToken }) {
     } else if (displayName === "") {
       setErrorNickMessage("닉네임을 입력하세요");
     } else {
-      //'http://localhost:8080/users'
+      //'http://localhost:8080/users/signin'
       //'http://localhost:4000/signup'
 
       try {
-        const res = await axios.post("http://localhost/:8080/users/signin", {
+        const res = await axios.post("http://localhost:8080/users/signin", {
           nickname: displayName,
           email: userId,
           password: password,

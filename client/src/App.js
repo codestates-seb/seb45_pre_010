@@ -26,8 +26,9 @@ function App() {
   
   return (
     <BrowserRouter>
-      <Header isLogin={isLogin} setIsLogin={setIsLogin} setToken={setToken}/>
-      {isLogin?(<Sidebar userInfo={userInfo} setUserInfo={setUserInfo}/>):('')}
+      <Header isLogin={isLogin} setIsLogin={setIsLogin} setToken={setToken} setUserInfo={setUserInfo}/>
+      {isLogin?(<Sidebar userInfo={userInfo} setUserInfo={setUserInfo}
+      setIsLogin={setIsLogin} setToken={setToken} />):('')}
       <MainContainer>
         <Routes>
           <Route path="/" element={<QuestionList />} />

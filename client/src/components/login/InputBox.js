@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 axios.defaults.withCredentials = true;
 function InputBox({ setIsLogin, setToken }) {
   const navigate = useNavigate();
-  const [email, setuserId] = useState("");
+  const [userId, setuserId] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -32,7 +32,7 @@ function InputBox({ setIsLogin, setToken }) {
     e.preventDefault();
     try {
       //"http://localhost:8080/users/login"
-      const res = await axios.post("http://localhost:8080/login", { email, password });
+      const res = await axios.post("http://localhost:8080/login", { email:userId, password:password });
       const token = res.data;
       console.log(token);
       setToken(token);

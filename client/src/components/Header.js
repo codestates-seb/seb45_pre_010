@@ -3,23 +3,25 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Header = ({isLogin, setIsLogin, setToken}) => {
+const Header = ({isLogin, setIsLogin, setToken, setUserInfo}) => {
   const navigate=useNavigate();
 
   const LoginHandeler = () => {
     navigate('/login')
-  }; //이것도 아마 쓸일이 없을거 같습니다. 근데 확신은 못해서 일단 남겨놓겠습니다.
+  }; 
 
   const LogOutHandeler = async() => {  
-    // try{
-    //   await axios.post("http://localhost:8080/users/logout")
-    // }
-    // catch(error){
-    //   console.log(error.responsedata)
-    // }  //서버가 안돌아가서 일단 닫아둠.
-    setIsLogin(false);
-    setToken('');
-    navigate('/')
+    try{
+      await axios.post("http://localhost:8080/users/logout"); 
+      setUserInfo('');
+      setIsLogin(false);
+      setToken('');
+      navigate('/')
+    }
+    catch(error){
+      console.log(error.responsedata)
+    }  //서버가 안돌아가서 일단 닫아둠.
+   
   }
 
   const SignUpHandler = () =>{
